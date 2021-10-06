@@ -51,7 +51,7 @@
                                     <div class="card-body">
                                         <h5 class="card-title"><b>Register</b></h5>
                                         <p class="card-text"></p>
-                                        <a href="<?php echo base_url('PerangkatDesa'); ?>"
+                                        <a href="<?php echo base_url('Auth/Regis'); ?>"
                                             class="btn btn-primary" 
                                             class="btn btn-secondary disabled"
                                         >Pilih</a>
