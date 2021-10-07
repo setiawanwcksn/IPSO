@@ -81,7 +81,7 @@
                                     <div class="card-body">
                                         <h5 class="card-title"><b>Optimization</b></h5>
                                         <p class="card-text"></p>
-                                        <a href="<?php echo site_url('Penerimaan'); ?>"
+                                        <a href="<?php echo site_url('User'); ?>"
                                             class="btn btn-primary" 									
                                             class="btn btn-secondary disabled"
                                         >Pilih</a>
