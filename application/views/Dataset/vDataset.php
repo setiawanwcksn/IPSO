@@ -6,7 +6,7 @@
 					<h4 class="card-title" style="text-align:center"><b>Optimization of Food Composition for Patients with Hypertension</b></h4>
 					<hr>					
 					<div style="clear:both"></div>	 
-                    <div class="">
+                    <div class="wrap">
                         <div class="unduh">
                             <div class="col">
                                 <div class="card">

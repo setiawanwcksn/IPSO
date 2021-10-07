@@ -4,5 +4,8 @@
     column-count: 5;
 }
 .card{
-    display: ;
+    display: "";
+}
+.container{
+    margin-top: 10px;
 }
