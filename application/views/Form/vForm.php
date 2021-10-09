@@ -37,8 +37,8 @@
                                     </div>
                                     <div class="form-group">
                                         <label for="gender">Tingkat Stres</label>
-                                        <select name="stress" class="form-control" id="stress" style="margin-left: 63px;">
-                                            <option selected="false" disabled="true">--Pilih Tingkat Stres--</option>
+                                        <select name="stress" class="form-control" id="stress" style="margin-left: 63px;" required>
+                                            <option selected="false" disabled="true" value="">--Pilih Tingkat Stres--</option>
                                             <option value="">aa</option>
                                             <option value="">vv</option>
                                             <option value="">ww</option>
@@ -46,8 +46,8 @@
                                     </div>
                                     <div class="form-group">
                                         <label for="gender">Aktivitas</label>
-                                        <select name="activity" class="form-control" id="activity" style="margin-left: 87px;">
-                                        <option selected="false" disabled="true">--Pilih Tingkat Aktivitas--</option>
+                                        <select name="activity" class="form-control" id="activity" style="margin-left: 87px;" required autofocus>
+                                            <option selected="false" disabled="true" value="">--Pilih Tingkat Aktivitas--</option>
                                             <option value="">aa</option>
                                             <option value="">bb</option>
                                             <option value="">cc</option>
