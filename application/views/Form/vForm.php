@@ -6,7 +6,7 @@
 					<hr>					
 					<div style="clear:both"></div>	 
                     <div class="wrap">
-                        <form action="">
+                        <form action="<?php echo base_url('Optimization/proccess')?>" method="POST">
                             <div class="row">
                                 <div class="col-6">
                                     <div class="form-group">
@@ -57,7 +57,7 @@
                                 <div class="col">
                                     <center>
                                     <div class="form-group">
-                                        <button type="submit" class="btn btn-primary btn-lg btn-block" tabindex="4">
+                                        <button type="submit" name="submit" class="btn btn-primary btn-lg btn-block" value="submit">
                                         Proccess
                                         </button>
                                     </div>
