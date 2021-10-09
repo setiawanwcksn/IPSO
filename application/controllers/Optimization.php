@@ -21,13 +21,37 @@ class Optimization extends CI_Controller {
 		$imt = $this->IndeksMassaTubuh($input);
 		
 		// hitung berat badan ideal		
-		$bbi = $this->BeratBadanIdeal($data,$imt);
+		$bbi = $this->BeratBadanIdeal($input,$imt);
 		
 		// hitung Basal Metabolic Rate
 		$bmr = $this->BasalMetabolicRate($input,$bbi);
         
 		// hitung Kebutuhan Energi 
-		$ke = $this->KebutuhanEnergi($data,$bmr);
+		$ke = $this->KebutuhanEnergi($input,$bmr);
+		
+		// menentukan kebutuhan natrium
+		$natrium = $this->natrium($input);
+
+		// kebutuhan kalium
+		$kalium = 2000;
+
+		// kebutuhan karbohidrat
+		$kh = $this->karbohidrat($ke);
+
+		// kebutuhan protein
+		$protein = $this->protein($ke);
+
+		// kebutuhan lemak
+		$lemak = $this->lemak($ke);
+
+		$dataKebutuhan = [
+			'natrium' => $natrium,
+			'kalium' => $kalium,
+			'kh' => $kh,
+			'protein' => $protein,
+			'lemak' => $lemak
+		];
+		echo '<pre>';print_r($dataKebutuhan);
     }
 
 	function IndeksMassaTubuh($data){
@@ -36,10 +60,10 @@ class Optimization extends CI_Controller {
 	}
 
 	function BeratBadanIdeal($data,$imt){
-		if (18.5 <= $imt <= 22.9) {
+		if ($imt >= 18.5  && $imt <= 22.9){
 			$bbi = $imt;
 		} else {
-			$bbi = ($data['weight']-100) - 0.1*($data['height']-100);
+			$bbi = ($data['height']-100) - 0.1*($data['height']-100);
 		}		
 		return $bbi;
 	}
@@ -86,6 +110,34 @@ class Optimization extends CI_Controller {
 		// hitung kebutuhan energi
 		$ke = $bmr*$activity*$data['stress'];
 
-		return $ke;
+		return round($ke,4);
+	}
+
+	function natrium($data){
+		// menentukan tingkat hipertensi
+		if ( (120 <= $data['sistolik'] && $data['sistolik'] <= 139) || (80 <= $data['diastolik'] && $data['diastolik'] <= 89 )) {
+			$natrium = 200;
+		} else if ((140 <= $data['sistolik'] && $data['sistolik'] <= 159) || (90 <= $data['diastolik'] && $data['diastolik'] <= 99 )) {
+			$natrium = 600;
+		} else if ($data['sistolik'] >= 160 || $data['diastolik'] >= 100 ){
+			$natrium = 1000;
+		}
+
+		return $natrium;		
+	}
+
+	function karbohidrat($ke){
+		$kh = (0.65*$ke)/4;
+		return round($kh,2);
+	}
+
+	function protein($ke){
+		$protein = (0.15*$ke)/4;
+		return round($protein,2);
+	}
+
+	function lemak($ke){
+		$lemak = (0.2*$ke)/9;
+		return round($lemak,2);
 	}
 }
