@@ -11,46 +11,57 @@
                                 <div class="col-6">
                                     <div class="form-group">
                                         <label for="name">Nama</label>
-                                        <input id="name" class="form-control" name="name" style="margin-left: 100px;" required autofocus>
+                                        <input id="name" class="form-control" name="name" style="margin-left: 100px;" placeholder="Masukkan Nama" required autofocus>
                                     </div>
                                     <div class="form-group">
                                         <label for="age">umur</label>
-                                        <input id="age" class="form-control" name="age" style="margin-left: 100px;" required autofocus>
+                                        <input id="age" class="form-control" name="age" type="number" style="margin-left: 100px;" placeholder="Masukkan Umur" required autofocus>
                                     </div>
                                     <div class="form-group">
-                                        <label for="gender">Jenis Kelamin</label>
-                                        <input id="gender" class="form-control" name="gender" style="margin-left: 52px;" required autofocus>
+                                        <label for="gender">Jenis Kelamin</label>                                        
+                                        <select name="gender" id="gender" class="form-control" style="margin-left: 52px;" required autofocus>
+                                            <option value="" selected="false" disabled>--Pilih Jenis Kelamin--</option>
+                                            <option value="Laki-laki">Laki-laki</option>
+                                            <option value="Perempuan">Perempuan</option>
+                                        </select>
                                     </div>
                                     <div class="form-group">
                                         <label for="weight">Berat Badan</label>
-                                        <input id="weight" class="form-control" name="weight" style="margin-left: 60px;" required autofocus>
+                                        <input id="weight" class="form-control" name="weight" type="float" style="margin-left: 60px;" placeholder="Masukkan Berat Badan (Kg)" required autofocus>
                                     </div>
                                     <div class="form-group" >
                                         <label for="height">Tinggi Badan</label>
-                                        <input id="height" class="form-control" name="height" style="margin-left: 55px;" required autofocus>
+                                        <input id="height" class="form-control" name="height" type="float" style="margin-left: 55px;" placeholder="Masukkan Tinggi Badan (cm)" required autofocus>
                                     </div>                                
                                 </div>                    
                                 <div class="col-6">
                                     <div class="form-group">
-                                        <label for="gender">Tingkat Hipertensi</label>
-                                        <input id="gender" class="form-control" name="gender" style="margin-left: 32px;" required autofocus>
+                                        <label for="sistolik">Tekanan darah Sistolik</label>
+                                        <input id="sistolik" class="form-control" name="sistolik" style="margin-left: 40px;" type="number" placeholder="Masukkan Tekanan darah Sistolik" required autofocus>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="diastolik">Tekanan darah Diastolik</label>
+                                        <input id="diastolik" class="form-control" name="diastolik" style="margin-left: 32px;" type="number" placeholder="Masukkan Tekanan darah Diastolik" required autofocus>
                                     </div>
                                     <div class="form-group">
                                         <label for="gender">Tingkat Stres</label>
-                                        <select name="stress" class="form-control" id="stress" style="margin-left: 63px;" required>
+                                        <select name="stress" class="form-control" id="stress" style="margin-left: 95px;" required>
                                             <option selected="false" disabled="true" value="">--Pilih Tingkat Stres--</option>
-                                            <option value="">aa</option>
-                                            <option value="">vv</option>
-                                            <option value="">ww</option>
+                                            <option value="1.3">Tidak ada stres</option>
+                                            <option value="1.4">Stress ringan</option>
+                                            <option value="1.5">Stress sedang</option>
+                                            <option value="1.6">Stress berat</option>
+                                            <option value="1.7">Stress sangat berat</option>
                                         </select>
                                     </div>
                                     <div class="form-group">
-                                        <label for="gender">Aktivitas</label>
-                                        <select name="activity" class="form-control" id="activity" style="margin-left: 87px;" required autofocus>
+                                        <label for="activity">Aktivitas</label>
+                                        <select name="activity" class="form-control" id="activity" style="margin-left: 122px;" required autofocus>
                                             <option selected="false" disabled="true" value="">--Pilih Tingkat Aktivitas--</option>
-                                            <option value="">aa</option>
-                                            <option value="">bb</option>
-                                            <option value="">cc</option>
+                                            <option value="Sangat ringan" title="Sebuah pola hidup dimana terlibat dalam aktivitas yang cukup seperti pada umumnya yang dianggap hidup sehat">Sangat ringan</option>
+                                            <option value="Ringan" title="Sedikitnya tenaga yang dikeluarkan dan mungkin tidak menyebabkan pernapasan atau ketahanan ">Ringan</option>
+                                            <option value="Sedang" title="Tenaga yang dibutuhkan intens, kekuatan atau berirama dalam menggerakkan otot.">Sedang</option>
+                                            <option value="Berat" title="Membutuhkan kekuatan serta ada kaitannya dengan berolahraga, membuat berkeringat.">Berat</option>
                                         </select>
                                     </div>
                                 </div>    
