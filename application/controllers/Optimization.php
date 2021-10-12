@@ -2,6 +2,14 @@
 defined('BASEPATH') OR exit('No direct script access allowed');
 
 class Optimization extends CI_Controller {
+	public function __construct(){
+		parent :: __construct();
+		$this->load->model("mPokok");	
+		$this->load->model("mBuah");	
+		$this->load->model("mHewani");		
+		$this->load->model("mNabati");	
+		$this->load->model("mSayur");	
+	}
 
 	public function index()
 	{
@@ -139,5 +147,55 @@ class Optimization extends CI_Controller {
 	function lemak($ke){
 		$lemak = (0.2*$ke)/9;
 		return round($lemak,2);
+	}
+
+	function model_ipso(){
+		$c1 = 2;
+		$c2 = 2;
+		$r1 = mt_rand(0,100)/100;
+		$r1 = mt_rand(0,100)/100;
+
+		// inisialisasi awal partikel
+		$x = $this->inisialisasi_awal();
+		// echo '<pre>'; print_r($x);
+
+		// hitung kandungan gizi
+		$gizi = $this->kandungan_gizi($x);
+
+	}
+
+	function inisialisasi_awal(){
+		$Xmax[1] = $this->mPokok->getMax();
+		$Xmax[2] = $this->mNabati->getMax();
+		$Xmax[3] = $this->mHewani->getMax();
+		$Xmax[4] = $this->mSayur->getMax();
+		$Xmax[5] = $this->mBuah->getMax();
+
+		$x = array();
+		for ($i=0; $i < 4 ; $i++) { 	
+			$y = 1;		
+			for ($j=0; $j < 14; $j++) { 
+				$x[$i][] = round(1 + (mt_rand(0,10)/10)*($Xmax[$y]-1));
+				$y++;
+				if ($y > 5) {
+					$y=1;
+				}
+			}
+		}	
+		return $x;
+	}
+
+	function kandungan_gizi($x){
+		$gizi = array();
+		for ($i=0; $i < 4 ; $i++) { 	
+			$y = 1;		
+			for ($j=0; $j < 14; $j++) { 
+				$x[$i][] = 1;
+				$y++;
+				if ($y > 5) {
+					$y=1;
+				}
+			}
+		}	
 	}
 }
