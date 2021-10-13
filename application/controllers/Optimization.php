@@ -53,15 +53,15 @@ class Optimization extends CI_Controller {
 		$lemak = $this->lemak($ke);
 
 		$dataKebutuhan = [
-			'natrium' => $natrium,
-			'kalium' => $kalium,
-			'kh' => $kh,
-			'protein' => $protein,
-			'lemak' => $lemak
+			'0' => $kh,
+			'1' => $protein,
+			'2' => $lemak,
+			'3' => $natrium,
+			'4' => $kalium,								
 		];
 		
 		// melakukan perhitungan model IPSO
-
+		$this->model_ipso($dataKebutuhan);
 
     }
 
@@ -152,7 +152,7 @@ class Optimization extends CI_Controller {
 		return round($lemak,2);
 	}
 
-	function model_ipso(){
+	function model_ipso($dataKebutuhan){
 		$c1 = 2;
 		$c2 = 2;
 		$r1 = mt_rand(0,100)/100;
@@ -166,7 +166,10 @@ class Optimization extends CI_Controller {
 		$gizi = $this->kandungan_gizi($x);
 
 		// hitung penalti gizi
+		$penalti = $this->penalti_gizi($dataKebutuhan,$gizi);
+		// echo '<pre>'; print_r($penalti);
 
+		// hitung 
 	}
 
 	function inisialisasi_awal(){
@@ -238,5 +241,18 @@ class Optimization extends CI_Controller {
 			$gizi[$i]= [$karbohidrat,$protein,$lemak,$natrium,$kalium,round($harga)]; 					
 		}	
 		return $gizi;
+	}
+
+	function penalti_gizi($dataKebutuhan,$gizi){
+		
+		$penalti = array();
+		$totalPenalti = 0;
+		for ($i=0; $i < count($gizi); $i++) { 
+			for ($j=0; $j < count($gizi[$i])-1; $j++) { 
+				$totalPenalti = $totalPenalti + abs($gizi[$i][$j]-$dataKebutuhan[$j]);				
+			}	
+			$penalti[] = $totalPenalti;
+		}
+		return $penalti;
 	}
 }
