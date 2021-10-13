@@ -15,4 +15,11 @@ class mSayur extends CI_Model {
                 ->row();                
         return $last->id;
     }
+
+    function getGizi($id){
+        $this->db->where('id',$id);
+        $query=$this->db->from('sayuran');
+        $data = $query->get()->row();
+        return $data;      
+    }
 }

@@ -8,6 +8,13 @@ class mBuah extends CI_Model {
     return $query;
     }
 
+    function getGizi($id){
+        $this->db->where('id',$id);
+        $query=$this->db->from('buah');
+        $data = $query->get()->row();
+        return $data;      
+    }
+
     function getMax(){
         $last = $this->db->order_by('id',"desc")
                 ->limit(1)

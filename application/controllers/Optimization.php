@@ -59,7 +59,10 @@ class Optimization extends CI_Controller {
 			'protein' => $protein,
 			'lemak' => $lemak
 		];
-		echo '<pre>';print_r($dataKebutuhan);
+		
+		// melakukan perhitungan model IPSO
+
+
     }
 
 	function IndeksMassaTubuh($data){
@@ -162,6 +165,8 @@ class Optimization extends CI_Controller {
 		// hitung kandungan gizi
 		$gizi = $this->kandungan_gizi($x);
 
+		// hitung penalti gizi
+
 	}
 
 	function inisialisasi_awal(){
@@ -186,16 +191,52 @@ class Optimization extends CI_Controller {
 	}
 
 	function kandungan_gizi($x){
+		$i = 0;$j=0;
+		$getGizi[1] = $this->mPokok->getGizi($x[$i][$j]);
+		$getGizi[2] = $this->mNabati->getGizi($x[$i][$j]);
+		$getGizi[3] = $this->mHewani->getGizi($x[$i][$j]);
+		$getGizi[4] = $this->mSayur->getGizi($x[$i][$j]);
+		$getGizi[5] = $this->mBuah->getGizi($x[$i][$j]);
+
 		$gizi = array();
 		for ($i=0; $i < 4 ; $i++) { 	
+			$karbohidrat = 0;
+			$protein = 0;
+			$lemak = 0;
+			$natrium = 0;
+			$kalium = 0;
+			$harga = 0;
 			$y = 1;		
 			for ($j=0; $j < 14; $j++) { 
-				$x[$i][] = 1;
+				if ($y == 1) {
+					$getGizi = $this->mPokok->getGizi($x[$i][$j]);
+				} else if ($y == 2) {
+					$getGizi = $this->mNabati->getGizi($x[$i][$j]);
+				} elseif ($y == 3) {
+					$getGizi = $this->mHewani->getGizi($x[$i][$j]);
+				} elseif ($y == 4) {
+					$getGizi = $this->mSayur->getGizi($x[$i][$j]);
+				} elseif ($y == 5) {
+					$getGizi = $this->mBuah->getGizi($x[$i][$j]);
+				}
+				$karbohidrat = $karbohidrat + $getGizi->karbohidrat;
+				$protein = $protein + $getGizi->protein;
+				$lemak = $lemak + $getGizi->lemak;
+				$natrium = $natrium + $getGizi->natrium;
+				$kalium = $kalium + $getGizi->kalium;
+				if ($y == 1) {
+					$harga = $harga + $getGizi->harga;
+				}else {
+					$harga = $harga + ($getGizi->harga*($getGizi->berat/$getGizi->per));
+				}				
+
 				$y++;
 				if ($y > 5) {
 					$y=1;
 				}
 			}
+			$gizi[$i]= [$karbohidrat,$protein,$lemak,$natrium,$kalium,round($harga)]; 					
 		}	
+		return $gizi;
 	}
 }
