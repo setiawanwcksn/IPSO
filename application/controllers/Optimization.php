@@ -167,9 +167,16 @@ class Optimization extends CI_Controller {
 
 		// hitung penalti gizi
 		$penalti = $this->penalti_gizi($dataKebutuhan,$gizi);
-		// echo '<pre>'; print_r($penalti);
+		echo '<pre>'; print_r($penalti);
 
-		// hitung 
+		// hitung fitness
+		$fitness = $this->fitness($gizi,$penalti);
+		echo '<pre>'; print_r($fitness);
+
+		// menentukan PBest / Local Best
+		$pBest = $this->pBest($fitness);
+		echo '<pre>'; print_r($pBest);
+
 	}
 
 	function inisialisasi_awal(){
@@ -246,13 +253,27 @@ class Optimization extends CI_Controller {
 	function penalti_gizi($dataKebutuhan,$gizi){
 		
 		$penalti = array();
-		$totalPenalti = 0;
+		
 		for ($i=0; $i < count($gizi); $i++) { 
+			$totalPenalti = 0;
 			for ($j=0; $j < count($gizi[$i])-1; $j++) { 
 				$totalPenalti = $totalPenalti + abs($gizi[$i][$j]-$dataKebutuhan[$j]);				
-			}	
+			}				
 			$penalti[] = $totalPenalti;
 		}
 		return $penalti;
+	}
+
+	function fitness($gizi,$penalti){
+		
+		$fitness = array();
+		for ($i=0; $i < count($penalti) ; $i++) { 
+			$fitness[] = round(100000/($gizi[$i][5]+($penalti[$i]*20)),2);
+		}
+		return $fitness;
+	}
+
+	function pBest($fitness){
+		return max($fitness);
 	}
 }
