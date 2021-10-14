@@ -177,6 +177,19 @@ class Optimization extends CI_Controller {
 		$pBest = $this->pBest($fitness);
 		echo '<pre>'; print_r($pBest);
 
+		// menentukan GBest / Global Best
+			// ntar dulu deh
+		
+		// Menghitung Constriction Factor (K)
+		$t = 1;
+		$tMax = 100;
+		$constrictionFactor = $this->constriction_factor($t,$tMax);
+		echo '<pre>'; print_r($constrictionFactor);
+
+		// menghitung Bobot Inersia (W)
+		$bobotInersia = $this->bobot_inersia($constrictionFactor,$t,$tMax);
+		echo '<pre>'; print_r($bobotInersia);
+
 	}
 
 	function inisialisasi_awal(){
@@ -275,5 +288,19 @@ class Optimization extends CI_Controller {
 
 	function pBest($fitness){
 		return max($fitness);
+	}
+
+	function constriction_factor($t,$tMax){
+		$constrictionFactor = (abs(cos((6.28/$tMax)*(($t-$tMax)/2)))+2.428571)/4;
+		return $constrictionFactor;
+	}
+
+	function gBest($fitness){
+
+	}
+
+	function bobot_inersia($constrictionFactor,$t,$tMax){
+		$bobotInersia = $constrictionFactor + ((1-$constrictionFactor)*(1-($t/$tMax)));
+		return $bobotInersia;
 	}
 }
