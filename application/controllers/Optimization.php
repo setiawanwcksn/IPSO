@@ -153,43 +153,52 @@ class Optimization extends CI_Controller {
 	}
 
 	function model_ipso($dataKebutuhan){
-		$c1 = 2;
-		$c2 = 2;
-		$r1 = mt_rand(0,100)/100;
-		$r1 = mt_rand(0,100)/100;
+		$tMax = 10;
+		for ($t=0; $t < $tMax; $t++) { 
+			if ($t==0) {
 
-		// inisialisasi awal partikel
-		$x = $this->inisialisasi_awal();
-		// echo '<pre>'; print_r($x);
+				// inisialisasi awal partikel
+				$x = $this->inisialisasi_awal();
+				// echo '<pre>'; print_r($x);
+			}
 
-		// hitung kandungan gizi
-		$gizi = $this->kandungan_gizi($x);
+			// hitung kandungan gizi
+			$gizi = $this->kandungan_gizi($x);
 
-		// hitung penalti gizi
-		$penalti = $this->penalti_gizi($dataKebutuhan,$gizi);
-		echo '<pre>'; print_r($penalti);
+			// hitung penalti gizi
+			$penalti = $this->penalti_gizi($dataKebutuhan,$gizi);
+			echo '<pre> penalti : '; print_r($penalti);
 
-		// hitung fitness
-		$fitness = $this->fitness($gizi,$penalti);
-		echo '<pre>'; print_r($fitness);
+			// hitung fitness
+			$fitness = $this->fitness($gizi,$penalti);
+			echo '<pre> fitness : '; print_r($fitness);
 
-		// menentukan PBest / Local Best
-		$pBest = $this->pBest($fitness);
-		echo '<pre>'; print_r($pBest);
+			// menentukan PBest / Local Best
+			$pBest= $this->pBest($fitness);
+			echo '<pre> pbest : '; print_r($pBest);
 
-		// menentukan GBest / Global Best
-			// ntar dulu deh
-		
-		// Menghitung Constriction Factor (K)
-		$t = 1;
-		$tMax = 100;
-		$constrictionFactor = $this->constriction_factor($t,$tMax);
-		echo '<pre>'; print_r($constrictionFactor);
+			// menentukan GBest / Global Best
+			if ($t == 0) {
+				$gBest = $pBest;
+			} 			
+			$gBest = $this->gBest($gBest,$pBest);
+			echo '<pre> gbest : '; print_r($gBest);
+									
+			// Menghitung Constriction Factor (K)			
+			$constrictionFactor = $this->constriction_factor($t+1,$tMax);
+			echo '<pre> K : '; print_r($constrictionFactor);
 
-		// menghitung Bobot Inersia (W)
-		$bobotInersia = $this->bobot_inersia($constrictionFactor,$t,$tMax);
-		echo '<pre>'; print_r($bobotInersia);
+			// menghitung Bobot Inersia (W)
+			$bobotInersia = $this->bobot_inersia($constrictionFactor,$t+1,$tMax);
+			echo '<pre> w : '; print_r($bobotInersia);
 
+			// menghitung kecepatan (V)
+			if ($t == 0) {
+				$kecepatan = 0;
+			}
+			$kecepatan = $this->kecepatan($constrictionFactor,$bobotInersia,$kecepatan,$t,$tMax,$pBest,$gBest,$x);
+			echo '<pre> kecepatan : '; print_r($kecepatan);
+		}
 	}
 
 	function inisialisasi_awal(){
@@ -287,7 +296,10 @@ class Optimization extends CI_Controller {
 	}
 
 	function pBest($fitness){
-		return max($fitness);
+		$key = array_keys($fitness,max($fitness));
+		// print_r($key);
+		$pBest[$key[0]] = max($fitness);
+		return $pBest;
 	}
 
 	function constriction_factor($t,$tMax){
@@ -295,12 +307,68 @@ class Optimization extends CI_Controller {
 		return $constrictionFactor;
 	}
 
-	function gBest($fitness){
-
+	function gBest($gBest,$pBest){
+		return max($gBest,$pBest);
 	}
 
 	function bobot_inersia($constrictionFactor,$t,$tMax){
 		$bobotInersia = $constrictionFactor + ((1-$constrictionFactor)*(1-($t/$tMax)));
 		return $bobotInersia;
+	}
+
+	function kecepatan($constrictionFactor,$bobotInersia,$kecepatan,$t,$tMax,$pBest,$gBest,$x){			
+		$key = array_keys($pBest);
+		// menghitung c1 * r1
+		$c1_r1 = 2 * mt_rand(0,100)/100;
+		// menghitung c1 * r1
+		$c2_r2 = 2 * mt_rand(0,100)/100;
+		// melakukan pengurangan pBest - X
+		for ($i=0; $i < 4; $i++) { 
+			for ($j=0; $j < count($x[0]); $j++) { 
+				$pBest_x[$i][] = $x[$key[0]][$j] - $x[$i][$j];
+			}
+		}
+		// melakukan pengurangan gBest - X
+		for ($i=0; $i < 4; $i++) { 
+			for ($j=0; $j < count($x[0]); $j++) { 
+				$gBest_x[$i][] = $x[$key[0]][$j] - $x[$i][$j];
+			}
+		}
+		// proses 1 : melakukan perkalian hasil c1 dan r1 dengan hasil pengurangan pBest dan X
+		for ($i=0; $i < 4; $i++) { 
+			for ($j=0; $j < count($x[0]); $j++) { 
+				$c1_r1_pBest_x[$i][] = $pBest_x[$i][$j]*$c1_r1;
+			}
+		}		
+		// proses 2 :  melakukan perkalian hasil c2 dan r2 dengan hasil pengurangan gBest dan X
+		for ($i=0; $i < 4; $i++) { 
+			for ($j=0; $j < count($x[0]); $j++) { 
+				$c2_r2_gBest_x[$i][] = $gBest_x[$i][$j]*$c2_r2;
+			}
+		}				
+		// proses 3 : melakukan penjumlahan proses 1 dan proses 2
+		for ($i=0; $i < 4; $i++) { 
+			for ($j=0; $j < count($x[0]); $j++) { 
+				$proses3[$i][] = $c1_r1_pBest_x[$i][$j] + $c2_r2_gBest_x[$i][$j];
+			}
+		}			
+		// melakukan perhitungan untuk 1/2 iterasi kebawah
+		$w_k = $bobotInersia*$kecepatan;
+
+		// melakukan perhitungan untuk 1/2 iterasi keatas
+		$w_v = $constrictionFactor*0.7*$kecepatan;
+
+
+		// menghitung kecepatan terbaru
+		for ($i=0; $i < 4; $i++) { 
+			for ($j=0; $j < count($x[0]); $j++) { 
+				if ($t < ($tMax/2)) {
+					$kecepatanNew[$i][] = $proses3[$i][$j] + $w_k;
+				} else {
+					$kecepatanNew[$i][] = $proses3[$i][$j] + $w_v;
+				}		
+			}
+		}
+		return $kecepatanNew;		
 	}
 }
