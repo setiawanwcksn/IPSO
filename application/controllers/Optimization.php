@@ -159,7 +159,7 @@ class Optimization extends CI_Controller {
 
 				// inisialisasi awal partikel
 				$x = $this->inisialisasi_awal();
-				// echo '<pre>'; print_r($x);
+				echo '<pre> posisi awal : '; print_r($x);
 			}
 
 			// hitung kandungan gizi
@@ -194,10 +194,18 @@ class Optimization extends CI_Controller {
 
 			// menghitung kecepatan (V)
 			if ($t == 0) {
-				$kecepatan = 0;
-			}
+				for ($i=0; $i < 4; $i++) { 
+					for ($j=0; $j < 14; $j++) { 
+						$kecepatan[$i][] = 0;
+					}
+				}
+			}			
 			$kecepatan = $this->kecepatan($constrictionFactor,$bobotInersia,$kecepatan,$t,$tMax,$pBest,$gBest,$x);
 			echo '<pre> kecepatan : '; print_r($kecepatan);
+
+			// Update Posisi (X)
+			$x = $this->update_posisi($x,$kecepatan);
+			echo '<pre> updated posisi : '; print_r($x);
 		}
 	}
 
@@ -352,23 +360,42 @@ class Optimization extends CI_Controller {
 				$proses3[$i][] = $c1_r1_pBest_x[$i][$j] + $c2_r2_gBest_x[$i][$j];
 			}
 		}			
+
 		// melakukan perhitungan untuk 1/2 iterasi kebawah
-		$w_k = $bobotInersia*$kecepatan;
-
+		for ($i=0; $i < 4; $i++) { 
+			for ($j=0; $j < count($x[0]); $j++) { 
+				$w_k[$i][] = $bobotInersia * $kecepatan[$i][$j];
+			}
+		}			
+		
 		// melakukan perhitungan untuk 1/2 iterasi keatas
-		$w_v = $constrictionFactor*0.7*$kecepatan;
-
+		for ($i=0; $i < 4; $i++) { 
+			for ($j=0; $j < count($x[0]); $j++) { 
+				$w_v[$i][] = $bobotInersia *0.7* $kecepatan[$i][$j];
+			}
+		}			
 
 		// menghitung kecepatan terbaru
 		for ($i=0; $i < 4; $i++) { 
 			for ($j=0; $j < count($x[0]); $j++) { 
 				if ($t < ($tMax/2)) {
-					$kecepatanNew[$i][] = $proses3[$i][$j] + $w_k;
+					$kecepatanNew[$i][] = round($proses3[$i][$j] + $w_k[$i][$j]);
 				} else {
-					$kecepatanNew[$i][] = $proses3[$i][$j] + $w_v;
+					$kecepatanNew[$i][] = round($proses3[$i][$j] + $w_v[$i][$j]);
 				}		
 			}
 		}
 		return $kecepatanNew;		
+	}
+
+	function update_posisi($posisiAwal,$kecepatan){
+		$x = array();
+		for ($i=0; $i < 4; $i++) { 
+			for ($j=0; $j < 14; $j++) { 
+				$x[$i][] = $posisiAwal[$i][$j] + $kecepatan[$i][$j];
+			}
+		}
+
+		return $x;
 	}
 }
