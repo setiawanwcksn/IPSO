@@ -153,13 +153,12 @@ class Optimization extends CI_Controller {
 	}
 
 	function model_ipso($dataKebutuhan){
-		$tMax = 10;
+		$tMax = 100;
 		for ($t=0; $t < $tMax; $t++) { 
 			if ($t==0) {
-
 				// inisialisasi awal partikel
 				$x = $this->inisialisasi_awal();
-				echo '<pre> posisi awal : '; print_r($x);
+				// echo '<pre> posisi awal : '; print_r($x);
 			}
 
 			// hitung kandungan gizi
@@ -167,11 +166,11 @@ class Optimization extends CI_Controller {
 
 			// hitung penalti gizi
 			$penalti = $this->penalti_gizi($dataKebutuhan,$gizi);
-			echo '<pre> penalti : '; print_r($penalti);
+			// echo '<pre> penalti : '; print_r($penalti);
 
 			// hitung fitness
 			$fitness = $this->fitness($gizi,$penalti);
-			echo '<pre> fitness : '; print_r($fitness);
+			// echo '<pre> fitness : '; print_r($fitness);
 
 			// menentukan PBest / Local Best
 			$pBest= $this->pBest($fitness);
@@ -180,17 +179,23 @@ class Optimization extends CI_Controller {
 			// menentukan GBest / Global Best
 			if ($t == 0) {
 				$gBest = $pBest;
-			} 			
+			}	
 			$gBest = $this->gBest($gBest,$pBest);
 			echo '<pre> gbest : '; print_r($gBest);
-									
+			
+			// menyimpan lokasi terbaik pada setiap iterasi	
+			if ($gBest[array_keys($gBest)[0]] <= $pBest[array_keys($pBest)[0]]) {
+				$xBest[$t] = $x[array_keys($pBest)[0]];
+			}
+			echo '<pre> posisi : ';print_r($xBest);
+
 			// Menghitung Constriction Factor (K)			
 			$constrictionFactor = $this->constriction_factor($t+1,$tMax);
-			echo '<pre> K : '; print_r($constrictionFactor);
+			// echo '<pre> K : '; print_r($constrictionFactor);
 
 			// menghitung Bobot Inersia (W)
 			$bobotInersia = $this->bobot_inersia($constrictionFactor,$t+1,$tMax);
-			echo '<pre> w : '; print_r($bobotInersia);
+			// echo '<pre> w : '; print_r($bobotInersia);
 
 			// menghitung kecepatan (V)
 			if ($t == 0) {
@@ -201,11 +206,11 @@ class Optimization extends CI_Controller {
 				}
 			}			
 			$kecepatan = $this->kecepatan($constrictionFactor,$bobotInersia,$kecepatan,$t,$tMax,$pBest,$gBest,$x);
-			echo '<pre> kecepatan : '; print_r($kecepatan);
+			// echo '<pre> kecepatan : '; print_r($kecepatan);
 
 			// Update Posisi (X)
 			$x = $this->update_posisi($x,$kecepatan);
-			echo '<pre> updated posisi : '; print_r($x);
+			// echo '<pre> updated posisi : '; print_r($x);
 		}
 	}
 
@@ -230,7 +235,7 @@ class Optimization extends CI_Controller {
 		return $x;
 	}
 
-	function kandungan_gizi($x){
+	function kandungan_gizi($x){		
 		$i = 0;$j=0;
 		$getGizi[1] = $this->mPokok->getGizi($x[$i][$j]);
 		$getGizi[2] = $this->mNabati->getGizi($x[$i][$j]);
@@ -316,7 +321,12 @@ class Optimization extends CI_Controller {
 	}
 
 	function gBest($gBest,$pBest){
-		return max($gBest,$pBest);
+		if ($gBest[array_keys($gBest)[0]] > $pBest[array_keys($pBest)[0]]) {
+			$x[array_keys($gBest)[0]] = $gBest[array_keys($gBest)[0]];
+		} else {
+			$x[array_keys($pBest)[0]] = $pBest[array_keys($pBest)[0]];
+		}		
+		return $x;
 	}
 
 	function bobot_inersia($constrictionFactor,$t,$tMax){
@@ -389,13 +399,29 @@ class Optimization extends CI_Controller {
 	}
 
 	function update_posisi($posisiAwal,$kecepatan){
-		$x = array();
+		$x = array();		
+		$Xmax[1] = $this->mPokok->getMax();
+		$Xmax[2] = $this->mNabati->getMax();
+		$Xmax[3] = $this->mHewani->getMax();
+		$Xmax[4] = $this->mSayur->getMax();
+		$Xmax[5] = $this->mBuah->getMax();
 		for ($i=0; $i < 4; $i++) { 
+			$y = 1;
 			for ($j=0; $j < 14; $j++) { 
-				$x[$i][] = $posisiAwal[$i][$j] + $kecepatan[$i][$j];
+				$temp_x = abs($posisiAwal[$i][$j] + $kecepatan[$i][$j]);
+				if ($temp_x > $Xmax[$y]) {
+					$temp_x = $temp_x % $Xmax[$y];
+				}
+				if ($temp_x == 0) {
+					$temp_x = 1;
+				}
+				$x[$i][] = $temp_x;
+				$y++;
+				if ($y > 5) {
+					$y=1;
+				}
 			}
 		}
-
 		return $x;
 	}
 }
