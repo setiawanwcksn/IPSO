@@ -12,4 +12,8 @@ class User extends CI_Controller {
 		$data['footer']="template/template_footer.php";	
 		$this->load->view('template/vtemplate',$data);
 	}
+
+	function save(){
+		print_r($this->session->userdata());
+	}
 }

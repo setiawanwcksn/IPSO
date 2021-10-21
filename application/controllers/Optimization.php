@@ -174,20 +174,20 @@ class Optimization extends CI_Controller {
 
 			// menentukan PBest / Local Best
 			$pBest= $this->pBest($fitness);
-			echo '<pre> pbest : '; print_r($pBest);
+			// echo '<pre> pbest : '; print_r($pBest);
 
 			// menentukan GBest / Global Best
 			if ($t == 0) {
 				$gBest = $pBest;
 			}	
 			$gBest = $this->gBest($gBest,$pBest);
-			echo '<pre> gbest : '; print_r($gBest);
+			// echo '<pre> gbest : '; print_r($gBest);
 			
 			// menyimpan lokasi terbaik pada setiap iterasi	
 			if ($gBest[array_keys($gBest)[0]] <= $pBest[array_keys($pBest)[0]]) {
 				$xBest[$t] = $x[array_keys($pBest)[0]];
 			}
-			echo '<pre> posisi : ';print_r($xBest);
+			// echo '<pre> posisi : ';print_r(end($xBest));
 
 			// Menghitung Constriction Factor (K)			
 			$constrictionFactor = $this->constriction_factor($t+1,$tMax);
@@ -212,6 +212,7 @@ class Optimization extends CI_Controller {
 			$x = $this->update_posisi($x,$kecepatan);
 			// echo '<pre> updated posisi : '; print_r($x);
 		}
+		$this->show_recommendation(end($xBest));
 	}
 
 	function inisialisasi_awal(){
@@ -374,14 +375,14 @@ class Optimization extends CI_Controller {
 		// melakukan perhitungan untuk 1/2 iterasi kebawah
 		for ($i=0; $i < 4; $i++) { 
 			for ($j=0; $j < count($x[0]); $j++) { 
-				$w_k[$i][] = $bobotInersia * $kecepatan[$i][$j];
+				$w_v[$i][] = $bobotInersia * $kecepatan[$i][$j];
 			}
 		}			
 		
 		// melakukan perhitungan untuk 1/2 iterasi keatas
 		for ($i=0; $i < 4; $i++) { 
 			for ($j=0; $j < count($x[0]); $j++) { 
-				$w_v[$i][] = $bobotInersia *0.7* $kecepatan[$i][$j];
+				$w_k[$i][] = $constrictionFactor *0.7* $kecepatan[$i][$j];
 			}
 		}			
 
@@ -389,9 +390,9 @@ class Optimization extends CI_Controller {
 		for ($i=0; $i < 4; $i++) { 
 			for ($j=0; $j < count($x[0]); $j++) { 
 				if ($t < ($tMax/2)) {
-					$kecepatanNew[$i][] = round($proses3[$i][$j] + $w_k[$i][$j]);
-				} else {
 					$kecepatanNew[$i][] = round($proses3[$i][$j] + $w_v[$i][$j]);
+				} else {
+					$kecepatanNew[$i][] = round($proses3[$i][$j] + $w_k[$i][$j]);
 				}		
 			}
 		}
@@ -423,5 +424,42 @@ class Optimization extends CI_Controller {
 			}
 		}
 		return $x;
+	}
+
+	function show_recommendation($xBest){
+		$j = 0;
+		$getGizi[1] = $this->mPokok->getGizi($xBest[$j]);
+		$getGizi[2] = $this->mNabati->getGizi($xBest[$j]);
+		$getGizi[3] = $this->mHewani->getGizi($xBest[$j]);
+		$getGizi[4] = $this->mSayur->getGizi($xBest[$j]);
+		$getGizi[5] = $this->mBuah->getGizi($xBest[$j]);
+		$y = 1;$i = 1;
+		for ($j=0; $j < 14; $j++) { 
+			if ($y == 1) {
+				$data['makanan'][$i][] = $this->mPokok->getGizi($xBest[$j])->nama;
+			}elseif ($y == 2) {
+				$data['makanan'][$i][] = $this->mNabati->getGizi($xBest[$j])->nama;
+			}elseif ($y == 3) {
+				$data['makanan'][$i][] = $this->mHewani->getGizi($xBest[$j])->nama;
+			}elseif ($y == 4) {
+				$data['makanan'][$i][] = $this->mSayur->getGizi($xBest[$j])->nama;
+			}elseif ($y == 5) {
+				$data['makanan'][$i][] = $this->mBuah->getGizi($xBest[$j])->nama;
+			}
+			if ($j == 13) {
+				$data['makanan'][$i][] = " - ";
+			}
+			$y++;
+			if ($y > 5) {
+				$y=1; $i++;
+			}
+		}
+		// echo '<pre>';print_r($data['makanan']);
+		$data['header']="template/template_header.php";
+		$data['css']="Result/vResult_css";
+		$data['content']="Result/vResult";
+		// $data['js']="dashboard/dashboard_js.php";
+		$data['footer']="template/template_footer.php";	
+		$this->load->view('template/vtemplate',$data);
 	}
 }
