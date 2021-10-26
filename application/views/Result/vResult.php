@@ -4,8 +4,8 @@
 			<div class="card" style="width: 100%; ">
 				<div class="card-body">					
 					<hr>				
-					<h5 style="text-align:left">Hasil Optimasi Komposisi Makanan</h5>	
-					<a href="<?php $y = 1; echo base_url("User/save/")?>"><button type="button" class="btn btn-outline-dark" style="float: right">Simpan Data </button> </a>
+					<h5 style="text-align:left">Hasil Optimasi Komposisi Makanan</h5>					
+						<a href="<?php $y = 1; echo base_url("User/save/")?>"><button type="button" class="btn btn-outline-dark" style="float: right" <?php if (!$id) {?>disabled <?php } ?>>Simpan Data </button> </a>									
 					<div style="clear:both"></div>	 					
                     <div class="wrap">					
 						<div class="container">						

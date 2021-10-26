@@ -8,11 +8,18 @@ class Optimization extends CI_Controller {
 		$this->load->model("mBuah");	
 		$this->load->model("mHewani");		
 		$this->load->model("mNabati");	
-		$this->load->model("mSayur");	
+		$this->load->model("mSayur");		
+		$this->load->model("mUser");	
 	}
 
 	public function index()
 	{
+		// Data Session
+		$data['id'] = $this->session->userdata('id'); 
+		$data['nama'] = $this->session->userdata('nama'); 
+		$data['username'] = $this->session->userdata('username'); 
+		$data['is_login'] = $this->session->userdata('is_login'); 
+
         $data['header']="template/template_header.php";
 		$data['css']="Dataset/vDataset_css";
 		$data['content']="Result/vResult";
@@ -158,7 +165,7 @@ class Optimization extends CI_Controller {
 			if ($t==0) {
 				// inisialisasi awal partikel
 				$x = $this->inisialisasi_awal();
-				// echo '<pre> posisi awal : '; print_r($x);
+				// echo '<pre> posisi awal : '; var_dump($x);die;
 			}
 
 			// hitung kandungan gizi
@@ -210,7 +217,7 @@ class Optimization extends CI_Controller {
 
 			// Update Posisi (X)
 			$x = $this->update_posisi($x,$kecepatan);
-			// echo '<pre> updated posisi : '; print_r($x);
+			// echo '<pre> updated posisi : '; var_dump($x);die;
 		}
 		$this->show_recommendation(end($xBest));
 	}
@@ -226,7 +233,7 @@ class Optimization extends CI_Controller {
 		for ($i=0; $i < 4 ; $i++) { 	
 			$y = 1;		
 			for ($j=0; $j < 14; $j++) { 
-				$x[$i][] = round(1 + (mt_rand(0,10)/10)*($Xmax[$y]-1));
+				$x[$i][] = (int) round(1 + (mt_rand(0,10)/10)*($Xmax[$y]-1));
 				$y++;
 				if ($y > 5) {
 					$y=1;
@@ -409,14 +416,14 @@ class Optimization extends CI_Controller {
 		for ($i=0; $i < 4; $i++) { 
 			$y = 1;
 			for ($j=0; $j < 14; $j++) { 
-				$temp_x = abs($posisiAwal[$i][$j] + $kecepatan[$i][$j]);
+				$temp_x = abs($posisiAwal[$i][$j] + $kecepatan[$i][$j]);				
 				if ($temp_x > $Xmax[$y]) {
 					$temp_x = $temp_x % $Xmax[$y];
 				}
 				if ($temp_x == 0) {
 					$temp_x = 1;
 				}
-				$x[$i][] = $temp_x;
+				$x[$i][] =(int) $temp_x;
 				$y++;
 				if ($y > 5) {
 					$y=1;
@@ -434,7 +441,9 @@ class Optimization extends CI_Controller {
 		$getGizi[4] = $this->mSayur->getGizi($xBest[$j]);
 		$getGizi[5] = $this->mBuah->getGizi($xBest[$j]);
 		$y = 1;$i = 1;
+		
 		for ($j=0; $j < 14; $j++) { 
+			$tempXBest['temp'.$j] = $xBest[$j];
 			if ($y == 1) {
 				$data['makanan'][$i][] = $this->mPokok->getGizi($xBest[$j])->nama;
 			}elseif ($y == 2) {
@@ -454,6 +463,13 @@ class Optimization extends CI_Controller {
 				$y=1; $i++;
 			}
 		}
+		$this->mUser->temp($tempXBest);
+		// Data Session
+		$data['id'] = $this->session->userdata('id'); 
+		$data['nama'] = $this->session->userdata('nama'); 
+		$data['username'] = $this->session->userdata('username'); 
+		$data['is_login'] = $this->session->userdata('is_login'); 
+				
 		// echo '<pre>';print_r($data['makanan']);
 		$data['header']="template/template_header.php";
 		$data['css']="Result/vResult_css";

@@ -8,12 +8,12 @@ defined('BASEPATH') OR exit('No direct script access allowed');
         <div class="row">
           <div class="col-12 col-sm-8 offset-sm-2 col-md-6 offset-md-3 col-lg-6 offset-lg-3 col-xl-4 offset-xl-4">
             <div class="card card-primary">
-              <div class="card-header" style="justify:center">
+              <div class="card-header">
                 <h1>Register</h1>
               </div>
 
               <div class="card-body">
-                <form method="POST" action="#" class="needs-validation" novalidate="">
+                <form method="POST" action="<?php echo base_url('Auth/reg')?>" class="needs-validation" novalidate="">
                   <div class="form-group">
                     <label for="name">Name</label>
                     <input id="name" class="form-control" name="name" tabindex="1" required autofocus>
@@ -25,7 +25,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                     <label for="username">Username</label>
                     <input id="username" class="form-control" name="username" tabindex="2" required autofocus>
                     <div class="invalid-feedback">
-                      Please fill in your email
+                      Please fill in your username
                     </div>
                   </div>
                   <div class="form-group">
@@ -36,19 +36,10 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                     <div class="invalid-feedback">
                       please fill in your password
                     </div>
-                  </div>
+                  </div>                 
                   <div class="form-group">
-                    <div class="d-block">
-                    	<label for="repassword" class="control-label">Confirm Your Password</label>
-                    </div>
-                    <input id="repassword" type="repassword" class="form-control" name="repassword" tabindex="4" required>
-                    <div class="invalid-feedback">
-                      please fill in your password
-                    </div>
-                  </div>
-                  <div class="form-group">
-                    <button type="submit" class="btn btn-primary btn-lg btn-block" tabindex="4">
-                      Login
+                    <button type="submit" name="submit" class="btn btn-primary btn-lg btn-block" value="submit">
+                      Register
                     </button>
                   </div>
                 </form>                
