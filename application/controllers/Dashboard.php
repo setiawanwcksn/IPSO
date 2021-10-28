@@ -14,7 +14,7 @@ class Dashboard extends CI_Controller {
 		$data['is_login'] = $this->session->userdata('is_login'); 		
 		// print_r($data);
 
-        $data['header']="template/template_header.php";
+        // $data['header']="template/template_header.php";
 		$data['css']="Dataset/vDataset_css";
 		$data['content']="Dashboard/vDashboard";
 		// $data['js']="dashboard/dashboard_js.php";

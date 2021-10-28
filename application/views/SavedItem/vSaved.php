@@ -11,7 +11,7 @@
                             <div id="tab">
                                 <nav>
                                     <?php for ($index = 0; $index < count($history); $index++) {                     ?>
-                                        <a href="#" <?php if ($index == 0) { ?> class="active" <?php } ?> data-id=<?php echo $index; ?>>Tab <?php echo $index; ?></a>
+                                        <a href="#" <?php if ($index == 0) { ?> class="active" <?php } ?> data-id=<?php echo $index; ?>>Tab <?php echo $index+1; ?></a>
                                     <?php } ?>
                                 </nav>
 

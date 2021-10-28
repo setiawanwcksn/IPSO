@@ -58,7 +58,7 @@ class User extends CI_Controller {
 	}
 
 	function show(){
-		$history = $this->mUser->getHistory(1);
+		$history = $this->mUser->getHistory($this->session->userdata('id'));
 		// echo '<pre>';print_r($history);die;
 
 		for ($indeks=0; $indeks < count($history); $indeks++) { 

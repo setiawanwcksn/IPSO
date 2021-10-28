@@ -9,7 +9,7 @@ class Auth extends CI_Controller {
         
     }
 	public function Login(){
-        $data['header']="template/template_header.php";
+        // $data['header']="template/template_header.php";
 		// $data['css']="dashboard/dashboard_css";
 		$data['content']="Auth/vLogin";
 		// $data['js']="dashboard/dashboard_js.php";
@@ -18,7 +18,7 @@ class Auth extends CI_Controller {
 	}
 
 	public function Regis(){
-        $data['header']="template/template_header.php";
+        // $data['header']="template/template_header.php";
 		// $data['css']="dashboard/dashboard_css";
 		$data['content']="Auth/vRegis";
 		// $data['js']="dashboard/dashboard_js.php";
