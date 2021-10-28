@@ -1,0 +1,25 @@
+#tab nav {
+    display: flex;
+  }
+  
+  #tab nav a {
+    color: black;
+    text-decoration: none;
+    padding: 0.5rem;
+    border: 1px solid silver;
+  }
+  
+  #tab nav .active {
+    background: lightgreen;
+  }
+  
+  .tab-content {
+    display: none;
+    
+    border: 1px solid silver;
+    padding: 1rem;
+  }
+  
+  .tab-content.active {
+      display: block;
+  }

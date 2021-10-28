@@ -41,4 +41,15 @@ class mUser extends CI_Model {
     function userHistory($data){
         $this->db->insert('userhistory', $data);  
     }
+
+    function getHistory($id){
+        // $this->db->from('savedItem');
+        // $this->db->where('id', $id);    
+        // return  $this->db->get()->result_array();
+        $this->db->select('savedItem.*');
+        $this->db->from('userhistory');
+        $this->db->join('savedItem','savedItem.id = userhistory.id_saved'); 
+        $this->db->where('userhistory.id_user',$id);
+        return  $this->db->get()->result_array();
+    }
 }
