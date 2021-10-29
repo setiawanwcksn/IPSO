@@ -11,9 +11,9 @@
                                     <div class="card-body">
                                         <h5 class="card-title"><b>Karbohidrat</b></h5>
                                         <p class="card-text"></p>
-                                        <a href="<?php echo base_url('Auth/Login'); ?>" 
+                                        <a href="https://drive.google.com/file/d/1FDuPQkaTws08RMPgYFVQnF3WUr_sNPTc/view?usp=sharing" 
                                             class="btn btn-primary" 
-                                            class="btn btn-secondary disabled"
+                                            class="btn btn-secondary disabled" target="_blank"
                                         >Pilih</a>
                                     </div>
                                 </div>
@@ -23,9 +23,9 @@
                                     <div class="card-body">
                                         <h5 class="card-title"><b>Protein Hewani</b></h5>
                                         <p class="card-text"></p>
-                                        <a href="<?php echo base_url('Auth/Regis'); ?>"
+                                        <a href="https://drive.google.com/file/d/1O6vLiWuulVDBD95KneJEKFS13XCFjCLu/view?usp=sharing"
                                             class="btn btn-primary" 
-                                            class="btn btn-secondary disabled"
+                                            class="btn btn-secondary disabled" target="_blank"
                                         >Pilih</a>
                                     </div>
                                 </div>
@@ -35,9 +35,9 @@
                                     <div class="card-body">
                                         <h5 class="card-title"><b>Protein Nabati</b></h5>
                                         <p class="card-text"></p>
-                                        <a href="<?php echo base_url('Unduh'); ?>"
+                                        <a href="https://drive.google.com/file/d/1lFHJ62ZF6A8IiVasVkxsOwCM8wonZqaH/view?usp=sharing"
                                             class="btn btn-primary" 
-                                            class="btn btn-secondary disabled"
+                                            class="btn btn-secondary disabled" target="_blank"
                                             >Pilih</a>
                                     </div>
                                 </div>
@@ -47,9 +47,9 @@
                                     <div class="card-body">
                                         <h5 class="card-title"><b>Sayuran</b></h5>
                                         <p class="card-text"></p>
-                                        <a href="<?php echo base_url('User/show'); ?>"
+                                        <a href="https://drive.google.com/file/d/1WIjCn7cyxaVtDjz0t432X5CdAxP5umZf/view?usp=sharing"
                                             class="btn btn-primary" 
-                                            class="btn btn-secondary disabled"
+                                            class="btn btn-secondary disabled" target="_blank"
                                             >Pilih</a>
                                     </div>
                                 </div>
@@ -59,9 +59,9 @@
                                     <div class="card-body">
                                         <h5 class="card-title"><b>Buah-Buahan</b></h5>
                                         <p class="card-text"></p>
-                                        <a href="<?php echo site_url('User'); ?>"
+                                        <a href="https://drive.google.com/file/d/1RGMB6fNktkG-NwojfRkPAy4sJVYtBVGP/view?usp=sharing"
                                             class="btn btn-primary" 									
-                                            class="btn btn-secondary disabled"
+                                            class="btn btn-secondary disabled" target="_blank"
                                         >Pilih</a>
                                     </div>
                                 </div>

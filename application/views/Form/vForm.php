@@ -2,7 +2,7 @@
 		<div class="">
 			<div class="card" style="width: 100%; ">
 				<div class="card-body">
-					<h4 class="card-title" style="text-align:center"><b>Optimization of Food Composition for Patients with Hypertension</b></h4>
+					<h5 class="card-title" style="text-align:left"><b>Masukkan Data Diri : </b></h5>
 					<hr>					
 					<div style="clear:both"></div>	 
                     <div class="wrap">
@@ -11,7 +11,7 @@
                                 <div class="col-6">
                                     <div class="form-group">
                                         <label for="name">Nama</label>
-                                        <input id="name" class="form-control" name="name" style="margin-left: 100px;" placeholder="Masukkan Nama" required autofocus>
+                                        <input id="name" class="form-control" name="name" style="margin-left: 100px;" placeholder="Masukkan Nama" value="<?php echo $nama; ?>" required autofocus>
                                     </div>
                                     <div class="form-group">
                                         <label for="age">umur</label>

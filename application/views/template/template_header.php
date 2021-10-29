@@ -25,7 +25,7 @@
   <div class="container">
     <center>
       <div class="wrap ">
-        <div class="card text-center" style="width: 60rem; ">
+        <div class="card card-primary text-center" style="width: 60rem; ">
           <div class="card-body">
             <h4 class="card-title" style="text-align:center"><b>Optimization of Food Composition for Patients with Hypertension</b></h4>
             <hr>
@@ -35,9 +35,11 @@
                   <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                     <?php echo $nama ?> <i class="fas fa-user-tie fa-2x"></i>
                   </a>
+                  <?php if ($id) { ?>                            
                   <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
                     <li><a class="dropdown-item" href="<?php echo site_url('Auth/LogOut'); ?>">Log Out</a></li>
                   </ul>
+                  <?php } ?>
                 </div>
               </div>
             </div>            

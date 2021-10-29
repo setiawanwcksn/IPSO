@@ -2,9 +2,9 @@
     <center>
         <div class="">
             <div class="card" style="width: 100%; ">
-                <div class="card-body">
-                    <hr>
+                <div class="card-body">                    
                     <h5 style="text-align:left">Hasil Optimasi Komposisi Makanan</h5>
+                    <hr>
                     <div style="clear:both"></div>
                     <div class="wrap">
                         <div class="container">

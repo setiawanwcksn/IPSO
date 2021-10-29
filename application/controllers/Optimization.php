@@ -194,7 +194,7 @@ class Optimization extends CI_Controller {
 			if ($gBest[array_keys($gBest)[0]] <= $pBest[array_keys($pBest)[0]]) {
 				$xBest[$t] = $x[array_keys($pBest)[0]];
 			}
-			// echo '<pre> posisi : ';print_r(end($xBest));
+			// echo '<pre> posisi : ';print_r($xBest);
 
 			// Menghitung Constriction Factor (K)			
 			$constrictionFactor = $this->constriction_factor($t+1,$tMax);
@@ -212,13 +212,14 @@ class Optimization extends CI_Controller {
 					}
 				}
 			}			
-			$kecepatan = $this->kecepatan($constrictionFactor,$bobotInersia,$kecepatan,$t,$tMax,$pBest,$gBest,$x);
+			$kecepatan = $this->kecepatan($constrictionFactor,$bobotInersia,$kecepatan,$t,$tMax,$pBest,end($xBest),$x);
 			// echo '<pre> kecepatan : '; print_r($kecepatan);
 
 			// Update Posisi (X)
 			$x = $this->update_posisi($x,$kecepatan);
 			// echo '<pre> updated posisi : '; var_dump($x);die;
 		}
+		// echo '<pre> gbest : '; print_r($gBest);die;
 		$this->show_recommendation(end($xBest));
 	}
 
@@ -342,10 +343,11 @@ class Optimization extends CI_Controller {
 		return $bobotInersia;
 	}
 
-	function kecepatan($constrictionFactor,$bobotInersia,$kecepatan,$t,$tMax,$pBest,$gBest,$x){			
+	function kecepatan($constrictionFactor,$bobotInersia,$kecepatan,$t,$tMax,$pBest,$gBest,$x){	
+		// echo '<pre>';print_r($gBest);
 		$key = array_keys($pBest);
 		// menghitung c1 * r1
-		$c1_r1 = 2 * mt_rand(0,100)/100;
+		$c1_r1 = 1 * mt_rand(0,100)/100;
 		// menghitung c1 * r1
 		$c2_r2 = 2 * mt_rand(0,100)/100;
 		// melakukan pengurangan pBest - X
@@ -357,15 +359,17 @@ class Optimization extends CI_Controller {
 		// melakukan pengurangan gBest - X
 		for ($i=0; $i < 4; $i++) { 
 			for ($j=0; $j < count($x[0]); $j++) { 
-				$gBest_x[$i][] = $x[$key[0]][$j] - $x[$i][$j];
+				$gBest_x[$i][] = $gBest[$j] - $x[$i][$j];
 			}
 		}
+		
 		// proses 1 : melakukan perkalian hasil c1 dan r1 dengan hasil pengurangan pBest dan X
 		for ($i=0; $i < 4; $i++) { 
 			for ($j=0; $j < count($x[0]); $j++) { 
 				$c1_r1_pBest_x[$i][] = $pBest_x[$i][$j]*$c1_r1;
 			}
 		}		
+
 		// proses 2 :  melakukan perkalian hasil c2 dan r2 dengan hasil pengurangan gBest dan X
 		for ($i=0; $i < 4; $i++) { 
 			for ($j=0; $j < count($x[0]); $j++) { 
@@ -377,7 +381,7 @@ class Optimization extends CI_Controller {
 			for ($j=0; $j < count($x[0]); $j++) { 
 				$proses3[$i][] = $c1_r1_pBest_x[$i][$j] + $c2_r2_gBest_x[$i][$j];
 			}
-		}			
+		}	
 
 		// melakukan perhitungan untuk 1/2 iterasi kebawah
 		for ($i=0; $i < 4; $i++) { 
@@ -421,7 +425,7 @@ class Optimization extends CI_Controller {
 					$temp_x = $temp_x % $Xmax[$y];
 				}
 				if ($temp_x == 0) {
-					$temp_x = 1;
+					$temp_x = $Xmax[$y];
 				}
 				$x[$i][] =(int) $temp_x;
 				$y++;
