@@ -22,16 +22,23 @@
 </head>
 
 <body>
-    <div class="container">
+    <div class="container" style="margin-top: 30px;">
         <center>
             <div class="wrap ">
                 <div class="card card-primary text-center" style="width: 60rem; ">
                     <div class="card-body">
+                        <?php if ($this->session->flashdata('warning')) { ?>
+                            <div class="alert alert-warning">
+                                <a data-dismiss="alert">&times;</a>
+                                <strong>Maaf,</strong> <?php echo $this->session->flashdata('warning'); ?>
+                            </div>
+                        <?php } ?>
                         <h4 class="card-title" style="text-align:center"><b>Optimasi Komposisi Makanan untuk Penderita Hipertensi</b></h4>
                         <hr>
                         <div class="card-image">
                             <div style="float:right">
-                                <div class="nav-item dropdown">
+                                <?php if ($nama) { ?>
+                                    <div class="nav-item dropdown">
                                     <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                                         <?php echo $nama ?> <i class="fas fa-user-tie fa-2x"></i>
                                     </a>
@@ -41,6 +48,7 @@
                                         </ul>
                                     <?php } ?>
                                 </div>
+                                <?php } ?>
                             </div>
                         </div>
                         <div style="clear:both"></div>

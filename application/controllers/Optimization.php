@@ -2,6 +2,7 @@
 defined('BASEPATH') OR exit('No direct script access allowed');
 
 class Optimization extends CI_Controller {
+	
 	public function __construct(){
 		parent :: __construct();
 		$this->load->model("mPokok");	
@@ -164,7 +165,7 @@ class Optimization extends CI_Controller {
 		for ($t=0; $t < $tMax; $t++) { 
 			if ($t==0) {
 				// inisialisasi awal partikel
-				$x = $this->inisialisasi_awal();
+				$x = $this->inisialisasi_awal();				
 				// echo '<pre> posisi awal : '; var_dump($x);die;
 			}
 
@@ -212,15 +213,36 @@ class Optimization extends CI_Controller {
 					}
 				}
 			}			
+
+
+			// menampung data
+			for ($i=0; $i < 4; $i++) { 
+				for ($j=0; $j < 14; $j++) { 					
+					$temp_posisi[$t][$i][] = $x[$i][$j];
+				}
+			}		
+			$temp_fitness[$t] = $fitness;
+			$temp_pbest[$t] = $pBest;
+			$temp_gbest[$t] = $gBest;
+			$temp_kecepatan[$t] = $kecepatan;			
+			
 			$kecepatan = $this->kecepatan($constrictionFactor,$bobotInersia,$kecepatan,$t,$tMax,$pBest,end($xBest),$x);
 			// echo '<pre> kecepatan : '; print_r($kecepatan);
 
 			// Update Posisi (X)
 			$x = $this->update_posisi($x,$kecepatan);
-			// echo '<pre> updated posisi : '; var_dump($x);die;
+			// echo '<pre> updated posisi : '; var_dump($x);die;			
 		}
-		// echo '<pre> gbest : '; print_r($gBest);die;
-		$this->show_recommendation(end($xBest));
+		$data = [
+			'posisi' => $temp_posisi,
+			'fitness' => $temp_fitness,
+			'pbest' => $temp_pbest,
+			'gbest' => $temp_gbest,
+			'kecepatan' => $temp_kecepatan
+
+		];
+		// echo '<pre> data : '; print_r($data);die;
+		$this->show_recommendation(end($xBest),$dataKebutuhan,$data);
 	}
 
 	function inisialisasi_awal(){
@@ -437,7 +459,7 @@ class Optimization extends CI_Controller {
 		return $x;
 	}
 
-	function show_recommendation($xBest){
+	function show_recommendation($xBest,$dataKebutuhan,$dataProcess){
 		$j = 0;
 		$getGizi[1] = $this->mPokok->getGizi($xBest[$j]);
 		$getGizi[2] = $this->mNabati->getGizi($xBest[$j]);
@@ -468,18 +490,27 @@ class Optimization extends CI_Controller {
 			}
 		}
 		$this->mUser->temp($tempXBest);
+
+		$data['kebutuhan'] = $dataKebutuhan;
+		$data['process'] = $dataProcess;
+
 		// Data Session
 		$data['id'] = $this->session->userdata('id'); 
 		$data['nama'] = $this->session->userdata('nama'); 
 		$data['username'] = $this->session->userdata('username'); 
 		$data['is_login'] = $this->session->userdata('is_login'); 
 				
-		// echo '<pre>';print_r($data['makanan']);
 		$data['header']="template/template_header.php";
 		$data['css']="Result/vResult_css";
 		$data['content']="Result/vResult";
-		// $data['js']="dashboard/dashboard_js.php";
+		$data['js']="Result/vResult_js.php";
 		$data['footer']="template/template_footer.php";	
 		$this->load->view('template/vtemplate',$data);
+	}
+
+	public function showProcess(){		
+		
+		$data = $this->session->userdata('data'); 
+		var_dump($data);
 	}
 }

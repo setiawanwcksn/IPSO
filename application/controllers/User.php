@@ -20,6 +20,7 @@ class User extends CI_Controller {
 			// print_r($data);die;
 		}else {
 			$data['age'] = '';
+			$data['user'] = new stdClass();$data['user']->gender = '';
 		}
 		
 		// Data Session
@@ -108,6 +109,7 @@ class User extends CI_Controller {
 		$data['footer']="template/template_footer.php";	
 		$this->load->view('template/vtemplate',$data);	
 		}else {
+			$this->session->set_flashdata('warning', 'Anda harus login terlebih dahulu!');
 			redirect('Dashboard');
 		}
 	}
