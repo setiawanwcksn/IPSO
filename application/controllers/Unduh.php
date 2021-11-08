@@ -10,6 +10,7 @@ class Unduh extends CI_Controller {
 		$data['username'] = $this->session->userdata('username'); 
 		$data['is_login'] = $this->session->userdata('is_login'); 
 
+		$data['active'] = "unduh";
         $data['header']="template/template_header.php";
 		$data['css']="Dataset/vDataset_css";
 		$data['content']="Dataset/vDataset";

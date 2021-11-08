@@ -26,8 +26,7 @@
 					<div class="tab-content active" data-content="1">
 						<h5 style="text-align:left">Hasil Optimasi Komposisi Makanan</h5>
 						<a href="<?php $y = 1;
-									echo base_url("User/save/") ?>"><button type="button" class="btn btn-outline-dark" style="float: right;" <?php if (!$id) { ?>disabled <?php } ?>>Simpan Data </button> </a>
-						<a href="#" onclick="pass()"><button type="button" class="btn btn-outline-dark" style="float: right;margin-right: 10px;">Lihat Proses Model IPSO </button> </a>
+									echo base_url("User/save/") ?>"><button type="button" class="btn btn-outline-dark" style="float: right;" <?php if (!$id) { ?>disabled <?php } ?>>Simpan Data </button> </a>						
 						<div style="clear:both"></div>
 						<div class="wrap">
 							<div class="">
@@ -47,6 +46,7 @@
 										<tbody>
 
 											<?php $y = 0;
+											$j = 1;
 											foreach ($makanan as $item) : ?>
 												<tr class="text-center">
 													<?php if ($y == 0) { ?>
@@ -56,13 +56,14 @@
 													<?php } else { ?>
 														<td scope="row"> <b>Malam </b></td>
 													<?php } ?>
-													<td><?php echo $item[0] ?></td>
-													<td><?php echo $item[1] ?></td>
-													<td><?php echo $item[2] ?></td>
-													<td><?php echo $item[3] ?></td>
-													<td><?php echo $item[4] ?></td>
+													<td><?php echo $item[0] ?> <br> <?php echo "( " . $berat[$j][0] . " gr )" ?> </td>
+													<td><?php echo $item[1] ?> <br> <?php echo "( " . $berat[$j][1] . " gr )" ?> </td>
+													<td><?php echo $item[2] ?> <br> <?php echo "( " . $berat[$j][2] . " gr )" ?> </td>
+													<td><?php echo $item[3] ?> <br> <?php echo "( " . $berat[$j][3] . " gr )" ?> </td>
+													<td><?php echo $item[4] ?> <br> <?php echo "( " . $berat[$j][4] . " gr )" ?> </td>
 												</tr>
-												<?php $y++ ?>
+												<?php $y++;
+												$j++; ?>
 											<?php endforeach; ?>
 										</tbody>
 									</table>
@@ -82,6 +83,7 @@
 										<thead>
 											<tr class="text-center">
 												<th scope="col">Iterasi</th>
+												<th scope="col">Partikel</th>
 												<th scope="col">Posisi</th>
 												<th scope="col">kecepatan</th>
 												<th scope="col">Fitness</th>
@@ -92,29 +94,38 @@
 
 										<tbody>
 
-											<?php $y = 0; $a = 1; $iterasi=0;
-											for ($i=0; $i < 400; $i++) { if ($y == 4) { $iterasi++;$y = 0; }; ?>
+											<?php $y = 0;
+											$a = 1;
+											$iterasi = 0;
+											for ($i = 0; $i < 400; $i++) {
+												if ($y == 4) {
+													$iterasi++;
+													$y = 0;
+												}; ?>
 												<tr class="text-center">
 													<td><?php if ($i == 0 || $i % 4 == 0) {
-														echo $a; $a++;
-													} ?></td>
-													<td>[<?php for ($j=0; $j < 14; $j++) { 
-															echo $process['posisi'][$iterasi][$y][$j].", ";																			
-													} ?>]</td>
-													<td>[<?php for ($j=0; $j < 14; $j++) { 
-															echo $process['kecepatan'][$iterasi][$y][$j].", ";																			
-													} ?>]</td>
-													<td><?php echo $process['fitness'][$iterasi][$y];?>
+															echo $a;
+															$a++;
+														} ?></td>
+													<td><?php echo "x" . ($y + 1) ?></td>
+													<td>[<?php for ($j = 0; $j < 14; $j++) {
+																echo $process['posisi'][$iterasi][$y][$j] . ", ";
+															} ?>]</td>
+													<td>[<?php for ($j = 0; $j < 14; $j++) {
+																echo $process['kecepatan'][$iterasi][$y][$j] . ", ";
+															} ?>]</td>
+													<td><?php echo $process['fitness'][$iterasi][$y]; ?>
 													</td>
 													<?php if (isset($process['pbest'][$iterasi][$y])) { ?>
 														<td><?php echo $process['pbest'][$iterasi][$y]; ?></td>
 														<td><?php echo end($process['gbest'][$iterasi]); ?></td>
-													<?php }else { ?>
+													<?php } else { ?>
 														<td><?php echo " - "; ?></td>
 														<td><?php echo " - "; ?></td>
 													<?php } ?>
-												</tr>												
-											<?php $y++; }; ?>
+												</tr>
+											<?php $y++;
+											}; ?>
 										</tbody>
 									</table>
 								</div>

@@ -48,31 +48,25 @@
                                         </ul>
                                     <?php } ?>
                                 </div>
+                                <?php }else { ?>
+                                    <a href="<?php echo base_url('Auth/Regis'); ?>" class="btn btn-primary" class="btn btn-secondary disabled" style="float: right;margin-right: 25px;">Registrasi</a>
+                                    <a href="<?php echo base_url('Auth/Login'); ?>" class="btn btn-primary" class="btn btn-secondary disabled" style="float: right;margin-right: 10px;">Login </a>
                                 <?php } ?>
                             </div>
                         </div>
                         <div style="clear:both"></div>
-                        <div class="row">
-                            <div class="row">
-                                <div class="col-4">
+                        <div class="row mt-4">
+                            <div class="row">     
+                            <div class="col-12 mt-2">
                                     <div class="card">
                                         <div class="card-body">
-                                            <h5 class="card-title"><b>Login</b></h5>
+                                            <h5 class="card-title"><b>Optimasi Komposisi Makanan</b></h5>
                                             <p class="card-text"></p>
-                                            <a href="<?php echo base_url('Auth/Login'); ?>" class="btn btn-primary" class="btn btn-secondary disabled">Pilih</a>
+                                            <a href="<?php echo site_url('User'); ?>" class="btn btn-primary" class="btn btn-secondary disabled">Pilih</a>
                                         </div>
                                     </div>
-                                </div>
-                                <div class="col-4">
-                                    <div class="card">
-                                        <div class="card-body">
-                                            <h5 class="card-title"><b>Register</b></h5>
-                                            <p class="card-text"></p>
-                                            <a href="<?php echo base_url('Auth/Regis'); ?>" class="btn btn-primary" class="btn btn-secondary disabled">Pilih</a>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-4">
+                                </div>                           
+                                <div class="col-6 mt-2">
                                     <div class="card">
                                         <div class="card-body">
                                             <h5 class="card-title"><b>Unduh Dataset</b></h5>
@@ -89,16 +83,7 @@
                                             <a href="<?php echo base_url('User/show'); ?>" class="btn btn-primary">Pilih</a>
                                         </div>
                                     </div>
-                                </div>
-                                <div class="col-6 mt-2">
-                                    <div class="card">
-                                        <div class="card-body">
-                                            <h5 class="card-title"><b>Optimasi Komposisi Makanan</b></h5>
-                                            <p class="card-text"></p>
-                                            <a href="<?php echo site_url('User'); ?>" class="btn btn-primary" class="btn btn-secondary disabled">Pilih</a>
-                                        </div>
-                                    </div>
-                                </div>
+                                </div>                                
                             </div>
 
                         </div>

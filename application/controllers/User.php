@@ -29,6 +29,7 @@ class User extends CI_Controller {
 		$data['username'] = $this->session->userdata('username'); 
 		$data['is_login'] = $this->session->userdata('is_login'); 
 		
+		$data['active'] = "";
         $data['header']="template/template_header.php";
 		$data['css']="Form/vForm_css";
 		$data['content']="Form/vForm";
@@ -58,6 +59,7 @@ class User extends CI_Controller {
 		$data['username'] = $this->session->userdata('username'); 
 		$data['is_login'] = $this->session->userdata('is_login'); 		
 
+		$data['active'] = "";
         $data['header']="template/template_header.php";
 		$data['css']="Dataset/vDataset_css";
 		$data['content']="Dashboard/vDashboard";
@@ -102,6 +104,7 @@ class User extends CI_Controller {
 		$data['username'] = $this->session->userdata('username'); 
 		$data['is_login'] = $this->session->userdata('is_login'); 		
 
+		$data['active'] = "saved";
         $data['header']="template/template_header.php";
 		$data['css']="SavedItem/vSaved_css";
 		$data['content']="SavedItem/vSaved";

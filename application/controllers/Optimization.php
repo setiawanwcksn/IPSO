@@ -21,6 +21,7 @@ class Optimization extends CI_Controller {
 		$data['username'] = $this->session->userdata('username'); 
 		$data['is_login'] = $this->session->userdata('is_login'); 
 
+		$data['active'] = "";
         $data['header']="template/template_header.php";
 		$data['css']="Dataset/vDataset_css";
 		$data['content']="Result/vResult";
@@ -330,8 +331,7 @@ class Optimization extends CI_Controller {
 		return $penalti;
 	}
 
-	function fitness($gizi,$penalti){
-		
+	function fitness($gizi,$penalti){		
 		$fitness = array();
 		for ($i=0; $i < count($penalti) ; $i++) { 
 			$fitness[] = round(100000/($gizi[$i][5]+($penalti[$i]*20)),2);
@@ -472,17 +472,23 @@ class Optimization extends CI_Controller {
 			$tempXBest['temp'.$j] = $xBest[$j];
 			if ($y == 1) {
 				$data['makanan'][$i][] = $this->mPokok->getGizi($xBest[$j])->nama;
+				$data['berat'][$i][] = $this->mPokok->getGizi($xBest[$j])->berat;
 			}elseif ($y == 2) {
 				$data['makanan'][$i][] = $this->mNabati->getGizi($xBest[$j])->nama;
+				$data['berat'][$i][] = $this->mNabati->getGizi($xBest[$j])->per;
 			}elseif ($y == 3) {
 				$data['makanan'][$i][] = $this->mHewani->getGizi($xBest[$j])->nama;
+				$data['berat'][$i][] = $this->mHewani->getGizi($xBest[$j])->per;
 			}elseif ($y == 4) {
 				$data['makanan'][$i][] = $this->mSayur->getGizi($xBest[$j])->nama;
+				$data['berat'][$i][] = $this->mSayur->getGizi($xBest[$j])->per;
 			}elseif ($y == 5) {
 				$data['makanan'][$i][] = $this->mBuah->getGizi($xBest[$j])->nama;
+				$data['berat'][$i][] = $this->mBuah->getGizi($xBest[$j])->per;
 			}
 			if ($j == 13) {
 				$data['makanan'][$i][] = " - ";
+				$data['berat'][$i][] = " - ";
 			}
 			$y++;
 			if ($y > 5) {
@@ -490,7 +496,7 @@ class Optimization extends CI_Controller {
 			}
 		}
 		$this->mUser->temp($tempXBest);
-
+		
 		$data['kebutuhan'] = $dataKebutuhan;
 		$data['process'] = $dataProcess;
 
@@ -500,6 +506,7 @@ class Optimization extends CI_Controller {
 		$data['username'] = $this->session->userdata('username'); 
 		$data['is_login'] = $this->session->userdata('is_login'); 
 				
+		$data['active'] = "";
 		$data['header']="template/template_header.php";
 		$data['css']="Result/vResult_css";
 		$data['content']="Result/vResult";

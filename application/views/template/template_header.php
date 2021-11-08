@@ -22,7 +22,7 @@
 </head>
 
 <body>
-  <div class="container">
+  <div class="container mt-4">
     <center>
       <div class="wrap ">
         <div class="card card-primary text-center" style="width: 60rem; ">
@@ -46,20 +46,34 @@
             <div class="">
               <div class="row">                
                 <div class="col-4">
-                  <div class="card">
+                  <div class="card <?php if ($active == 'saved') { ?>
+                    card-primary
+                  <?php } ?>">
                     <div class="card-body">
                       <h6 class="card-title"><b>Rekomendasi Tersimpan</b></h6>
                       <p class="card-text"></p>
-                      <a href="<?php echo base_url('User/show'); ?>" class="btn btn-primary" class="btn btn-secondary disabled">Pilih</a>
+                      <a href="<?php if ($active != 'saved') {
+                        echo base_url('User/show');
+                      }else {
+                        echo "#";
+                      } ?>"><button class="btn btn-primary" <?php if ($active == 'saved') { ?>
+                        disabled
+                      <?php } ?>>Pilih</button></a>
                     </div>
                   </div>
                 </div>
                 <div class="col-4">
-                  <div class="card">
+                  <div class="card <?php if ($active == 'unduh') { ?>
+                    card-primary
+                  <?php } ?>">
                     <div class="card-body">
                       <h5 class="card-title"><b>Unduh Dataset</b></h5>
                       <p class="card-text"></p>
-                      <a href="<?php echo base_url('Unduh'); ?>" class="btn btn-primary" class="btn btn-secondary disabled">Pilih</a>
+                      <a href="<?php if ($active != 'unduh') { echo base_url('Unduh'); }else {
+                        echo "#";
+                      }  ?>"><button class="btn btn-primary" <?php if ($active == 'unduh') { ?>
+                        disabled
+                      <?php } ?>>Pilih</button></a>
                     </div>
                   </div>
                 </div>
@@ -68,7 +82,7 @@
                     <div class="card-body">
                       <h5 class="card-title"><b>Dashboard</b></h5>
                       <p class="card-text"></p>
-                      <a href="<?php echo base_url('Dashboard'); ?>" class="btn btn-primary" class="btn btn-secondary disabled">Pilih</a>
+                      <a href="<?php echo base_url('Dashboard'); ?>" class="btn btn-primary">Pilih</a>
                     </div>
                   </div>
                 </div>

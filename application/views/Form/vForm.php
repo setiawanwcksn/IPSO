@@ -14,7 +14,7 @@
                                         <input id="name" class="form-control" name="name" style="margin-left: 100px;" placeholder="Masukkan Nama" value="<?php echo $nama; ?>" required autofocus>
                                     </div>
                                     <div class="form-group">
-                                        <label for="age">umur</label>
+                                        <label for="age">Umur</label>
                                         <input id="age" class="form-control" name="age" type="number" style="margin-left: 100px;" placeholder="Masukkan Umur" value="<?php echo $age ?>" required autofocus>
                                     </div>
                                     <div class="form-group">
@@ -30,12 +30,12 @@
                                         </select>
                                     </div>
                                     <div class="form-group">
-                                        <label for="weight">Berat Badan</label>
-                                        <input id="weight" class="form-control" name="weight" type="float" style="margin-left: 60px;" placeholder="Masukkan Berat Badan (Kg)" required autofocus>
+                                        <label for="weight">Berat Badan (Kg)</label>
+                                        <input id="weight" class="form-control" name="weight" type="number" style="margin-left: 34px;" placeholder="Masukkan Berat Badan (Kg)" required autofocus>
                                     </div>
                                     <div class="form-group" >
-                                        <label for="height">Tinggi Badan</label>
-                                        <input id="height" class="form-control" name="height" type="float" style="margin-left: 55px;" placeholder="Masukkan Tinggi Badan (cm)" required autofocus>
+                                        <label for="height">Tinggi Badan (Cm)</label>
+                                        <input id="height" class="form-control" name="height" type="number" style="margin-left: 21px;" placeholder="Masukkan Tinggi Badan (cm)" required autofocus>
                                     </div>                                
                                 </div>                    
                                 <div class="col-6">
