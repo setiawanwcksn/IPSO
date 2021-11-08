@@ -27,7 +27,7 @@
             <div class="wrap ">
                 <div class="card card-primary text-center" style="width: 60rem; ">
                     <div class="card-body">
-                        <h4 class="card-title" style="text-align:center"><b>Optimization of Food Composition for Patients with Hypertension</b></h4>
+                        <h4 class="card-title" style="text-align:center"><b>Optimasi Komposisi Makanan untuk Penderita Hipertensi</b></h4>
                         <hr>
                         <div class="card-image">
                             <div style="float:right">
@@ -76,7 +76,7 @@
                                 <div class="col-6 mt-2">
                                     <div class="card">
                                         <div class="card-body">
-                                            <h5 class="card-title"><b>Show My History</b></h5>
+                                            <h5 class="card-title"><b>Rekomendasi Tersimpan</b></h5>
                                             <p class="card-text"></p>
                                             <a href="<?php echo base_url('User/show'); ?>" class="btn btn-primary">Pilih</a>
                                         </div>
@@ -85,7 +85,7 @@
                                 <div class="col-6 mt-2">
                                     <div class="card">
                                         <div class="card-body">
-                                            <h5 class="card-title"><b>Optimization</b></h5>
+                                            <h5 class="card-title"><b>Optimasi Komposisi Makanan</b></h5>
                                             <p class="card-text"></p>
                                             <a href="<?php echo site_url('User'); ?>" class="btn btn-primary" class="btn btn-secondary disabled">Pilih</a>
                                         </div>

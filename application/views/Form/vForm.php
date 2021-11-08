@@ -15,14 +15,18 @@
                                     </div>
                                     <div class="form-group">
                                         <label for="age">umur</label>
-                                        <input id="age" class="form-control" name="age" type="number" style="margin-left: 100px;" placeholder="Masukkan Umur" required autofocus>
+                                        <input id="age" class="form-control" name="age" type="number" style="margin-left: 100px;" placeholder="Masukkan Umur" value="<?php echo $age ?>" required autofocus>
                                     </div>
                                     <div class="form-group">
                                         <label for="gender">Jenis Kelamin</label>                                        
                                         <select name="gender" id="gender" class="form-control" style="margin-left: 52px;" required autofocus>
                                             <option value="" selected="false" disabled>--Pilih Jenis Kelamin--</option>
-                                            <option value="Laki-laki">Laki-laki</option>
-                                            <option value="Perempuan">Perempuan</option>
+                                            <option value="Laki-laki" <?php if ($user->gender == 'Laki-laki') { ?>
+                                                selected = "true"
+                                            <?php } ?> >Laki-laki</option>
+                                            <option value="Perempuan" <?php if ($user->gender == 'Perempuan') { ?>
+                                                selected="true"
+                                            <?php } ?>>Perempuan</option>
                                         </select>
                                     </div>
                                     <div class="form-group">

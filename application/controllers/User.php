@@ -14,12 +14,20 @@ class User extends CI_Controller {
 
 	public function index()
 	{
+		if ($this->session->userdata('id')) {
+			$data['user'] = $this->mUser->cekUser($this->session->userdata('username'));
+			$data['age'] = $this->hitung_umur($data['user']->tanggal_lahir);
+			// print_r($data);die;
+		}else {
+			$data['age'] = '';
+		}
+		
 		// Data Session
 		$data['id'] = $this->session->userdata('id'); 
 		$data['nama'] = $this->session->userdata('nama'); 
 		$data['username'] = $this->session->userdata('username'); 
 		$data['is_login'] = $this->session->userdata('is_login'); 
-
+		
         $data['header']="template/template_header.php";
 		$data['css']="Form/vForm_css";
 		$data['content']="Form/vForm";
@@ -58,7 +66,8 @@ class User extends CI_Controller {
 	}
 
 	function show(){
-		$history = $this->mUser->getHistory($this->session->userdata('id'));
+		if ($this->session->userdata('id')) {
+			$history = $this->mUser->getHistory($this->session->userdata('id'));
 		// echo '<pre>';print_r($history);die;
 
 		for ($indeks=0; $indeks < count($history); $indeks++) { 
@@ -97,6 +106,19 @@ class User extends CI_Controller {
 		$data['content']="SavedItem/vSaved";
 		$data['js']="SavedItem/vSaved_js.php";
 		$data['footer']="template/template_footer.php";	
-		$this->load->view('template/vtemplate',$data);		
+		$this->load->view('template/vtemplate',$data);	
+		}else {
+			redirect('Dashboard');
+		}
+	}
+
+	function hitung_umur($tanggal_lahir) {
+		list($year,$month,$day) = explode("-",$tanggal_lahir);
+		$year_diff  = date("Y") - $year;
+		$month_diff = date("m") - $month;
+		$day_diff   = date("d") - $day;
+		if ($month_diff < 0) $year_diff--;
+			elseif (($month_diff==0) && ($day_diff < 0)) $year_diff--;
+		return $year_diff;
 	}
 }

@@ -19,6 +19,7 @@
   ?>
 
 </head>
+
 <body>
   <div id="app">
     <section class="section">
@@ -31,36 +32,45 @@
               </div>
 
               <div class="card-body">
-                <form method="POST" action="<?php echo base_url('Auth/reg')?>" class="needs-validation" novalidate="">
+                <?php if ($this->session->flashdata('warning')) { ?>
+                  <div class="alert alert-warning">
+                    <a data-dismiss="alert">&times;</a>
+                    <strong>Maaf!</strong> <?php echo $this->session->flashdata('warning'); ?>
+                  </div>
+                <?php } ?>
+                <form method="POST" action="<?php echo base_url('Auth/reg') ?>" class="needs-validation">
                   <div class="form-group">
                     <label for="name">Name</label>
-                    <input id="name" class="form-control" name="name" tabindex="1" required autofocus>
-                    <div class="invalid-feedback">
-                      Please fill in your email
-                    </div>
+                    <input id="name" class="form-control" name="name" tabindex="1" placeholder="Masukkan Nama" required autofocus>
                   </div>
                   <div class="form-group">
                     <label for="username">Username</label>
-                    <input id="username" class="form-control" name="username" tabindex="2" required autofocus>
-                    <div class="invalid-feedback">
-                      Please fill in your username
-                    </div>
+                    <input id="username" class="form-control" name="username" placeholder="Masukkan Username" tabindex="2" required autofocus>
+                  </div>
+                  <div class="form-group">
+                    <label for="date">Tanggal Lahir</label>
+                    <input type="date" class="form-control" id="date" name="date">
+                  </div>
+                  <div class="form-group">
+                    <label for="gender">Jenis Kelamin</label>
+                    <select name="gender" id="gender" class="form-control" required autofocus>
+                      <option value="" selected="false" disabled>--Pilih Jenis Kelamin--</option>
+                      <option value="Laki-laki">Laki-laki</option>
+                      <option value="Perempuan">Perempuan</option>
+                    </select>
                   </div>
                   <div class="form-group">
                     <div class="d-block">
-                    	<label for="password" class="control-label">Create a Password</label>
+                      <label for="password" class="control-label">Create a Password</label>
                     </div>
-                    <input id="password" type="password" class="form-control" name="password" tabindex="3" required>
-                    <div class="invalid-feedback">
-                      please fill in your password
-                    </div>
-                  </div>                 
+                    <input id="password" type="password" class="form-control" name="password" tabindex="3" placeholder="Masukkan Passowrd" required>
+                  </div>
                   <div class="form-group">
                     <button type="submit" name="submit" class="btn btn-primary btn-lg btn-block" value="submit">
                       Register
                     </button>
                   </div>
-                </form>                
+                </form>
 
               </div>
             </div>

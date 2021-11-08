@@ -52,4 +52,10 @@ class mUser extends CI_Model {
         $this->db->where('userhistory.id_user',$id);
         return  $this->db->get()->result_array();
     }
+
+    function cekUser($username){
+        $this->db->from('user');
+        $this->db->where('username',$username);    
+        return  $this->db->get()->row();
+    }
 }

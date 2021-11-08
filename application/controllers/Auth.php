@@ -12,7 +12,7 @@ class Auth extends CI_Controller {
         // $data['header']="template/template_header.php";
 		// $data['css']="dashboard/dashboard_css";
 		$data['content']="Auth/vLogin";
-		// $data['js']="dashboard/dashboard_js.php";
+		$data['js']="Auth/vAuth_js.php";
 		$data['footer']="template/template_footer.php";	
 		$this->load->view('template/vtemplate',$data);
 	}
@@ -21,7 +21,7 @@ class Auth extends CI_Controller {
         // $data['header']="template/template_header.php";
 		// $data['css']="dashboard/dashboard_css";
 		$data['content']="Auth/vRegis";
-		// $data['js']="dashboard/dashboard_js.php";
+		$data['js']="Auth/vAuth_js.php";
 		$data['footer']="template/template_footer.php";	
 		$this->load->view('template/vtemplate',$data);
 	}
@@ -60,6 +60,7 @@ class Auth extends CI_Controller {
             $this->session->set_userdata($data_session);
             redirect('Dashboard');
         } else {
+			$this->session->set_flashdata('warning', 'Akun belum terdaftar!');  
             redirect('Auth/Login');
         }
 
@@ -68,13 +69,21 @@ class Auth extends CI_Controller {
 	function reg(){
 		$input = $this->input->post(NULL,TRUE);
 		extract($input);
+		$cekUsername = $this->mUser->cekUser($username);
+		if ($cekUsername) {
+			$this->session->set_flashdata('warning', 'Username Sudah dipakai!');  
+            redirect('Auth/Regis');
+		} else {
+			$akun = array(
+				'name' => $name,
+				'username' => $username,
+				'tanggal_lahir' => $date,
+				'gender' => $gender,
+				'password' => $password
+			);
+			$regisAkun = $this->mUser->regis($akun);
+			redirect('Auth/Login');
+		}
 		
-		$akun = array(
-			'name' => $name,
-			'username' => $username,
-			'password' => $password
-		);
-		$regisAkun = $this->mUser->regis($akun);
-		redirect('Auth/Login');
 	}
 }
