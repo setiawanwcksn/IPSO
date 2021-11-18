@@ -21,57 +21,59 @@
 
 </head>
 
-<body>
-    <div class="container" style="margin-top: 30px;">
+<body id="body">
+    <div class="container " style="margin-top: 30px;">
         <center>
             <div class="wrap ">
                 <div class="card card-primary text-center" style="width: 60rem; ">
+                <div class="card-title mt-4" style="margin-bottom: -19px;">
+                        <h4 style="text-align:center"><b>Optimasi Komposisi Makanan untuk Penderita Hipertensi</b></h4>
+                        </div>   
                     <div class="card-body">
                         <?php if ($this->session->flashdata('warning')) { ?>
                             <div class="alert alert-warning">
                                 <a data-dismiss="alert">&times;</a>
                                 <strong>Maaf,</strong> <?php echo $this->session->flashdata('warning'); ?>
                             </div>
-                        <?php } ?>
-                        <h4 class="card-title" style="text-align:center"><b>Optimasi Komposisi Makanan untuk Penderita Hipertensi</b></h4>
+                        <?php } ?>                     
                         <hr>
-                        <div class="card-image">
-                            <div style="float:right">
-                                <?php if ($nama) { ?>
-                                    <div class="nav-item dropdown">
-                                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                        <?php echo $nama ?> <i class="fas fa-user-tie fa-2x"></i>
-                                    </a>
-                                    <?php if ($id) { ?>
-                                        <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                                            <li><a class="dropdown-item" href="<?php echo site_url('Auth/LogOut'); ?>">Log Out</a></li>
-                                        </ul>
+                        <div class="container cl">
+                            <div class="card-image">
+                                <div style="float:right;margin-top: 10px;margin-bottom: -18px;margin-right: -24px;">
+                                    <?php if ($nama) { ?>
+                                        <div class="nav-item dropdown">
+                                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                                <?php echo $nama ?> <i class="fas fa-user-tie fa-2x"></i>
+                                            </a>
+                                            <?php if ($id) { ?>
+                                                <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                                    <li><a class="dropdown-item" href="<?php echo site_url('Auth/LogOut'); ?>">Log Out</a></li>
+                                                </ul>
+                                            <?php } ?>
+                                        </div>
+                                    <?php } else { ?>
+                                        <a href="<?php echo base_url('Auth/Regis'); ?>" class="btn btn-primary btn-primaryy" class="btn btn-secondary disabled" style="float: right;margin-right: 25px;">Registrasi</a>
+                                        <a href="<?php echo base_url('Auth/Login'); ?>" class="btn btn-primary btn-primaryy" class="btn btn-secondary disabled" style="float: right;margin-right: 10px;">Login </a>
                                     <?php } ?>
                                 </div>
-                                <?php }else { ?>
-                                    <a href="<?php echo base_url('Auth/Regis'); ?>" class="btn btn-primary" class="btn btn-secondary disabled" style="float: right;margin-right: 25px;">Registrasi</a>
-                                    <a href="<?php echo base_url('Auth/Login'); ?>" class="btn btn-primary" class="btn btn-secondary disabled" style="float: right;margin-right: 10px;">Login </a>
-                                <?php } ?>
                             </div>
-                        </div>
-                        <div style="clear:both"></div>
-                        <div class="row mt-4">
-                            <div class="row">     
-                            <div class="col-12 mt-2">
+                            <div style="clear:both"></div>
+                            <div class="row mt-4">
+                                <div class="col-12 mt-2">
                                     <div class="card">
                                         <div class="card-body">
                                             <h5 class="card-title"><b>Optimasi Komposisi Makanan</b></h5>
                                             <p class="card-text"></p>
-                                            <a href="<?php echo site_url('User'); ?>" class="btn btn-primary" class="btn btn-secondary disabled">Pilih</a>
+                                            <a href="<?php echo site_url('User'); ?>" class="btn btn-primary" class="btn btn-secondary disabled"><i class="fas fa-pizza-slice fa-2x"></i></a>
                                         </div>
                                     </div>
-                                </div>                           
+                                </div>
                                 <div class="col-6 mt-2">
                                     <div class="card">
                                         <div class="card-body">
                                             <h5 class="card-title"><b>Unduh Dataset</b></h5>
                                             <p class="card-text"></p>
-                                            <a href="<?php echo base_url('Unduh'); ?>" class="btn btn-primary" class="btn btn-secondary disabled">Pilih</a>
+                                            <a href="<?php echo base_url('Unduh'); ?>" class="btn btn-primary" class="btn btn-secondary disabled"><i class="fas fa-download fa-2x"></i></a>
                                         </div>
                                     </div>
                                 </div>
@@ -80,12 +82,11 @@
                                         <div class="card-body">
                                             <h5 class="card-title"><b>Rekomendasi Tersimpan</b></h5>
                                             <p class="card-text"></p>
-                                            <a href="<?php echo base_url('User/show'); ?>" class="btn btn-primary">Pilih</a>
+                                            <a href="<?php echo base_url('User/show'); ?>" class="btn btn-primary"><i class="fas fa-save fa-2x"></i></a>
                                         </div>
                                     </div>
-                                </div>                                
+                                </div>
                             </div>
-
                         </div>
                     </div>
                 </div>

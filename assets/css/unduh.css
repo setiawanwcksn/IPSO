@@ -9,3 +9,20 @@
 .container{
     margin-top: 10px;
 }
+
+.cl{
+    background-color: aliceblue;
+}
+
+.btn-primaryy {
+    color: #fff;
+    background-color: #8494ac;
+    border-color: #8494ac;
+}
+body{
+    background-color: #b4cfe6;
+}
+
+label{
+    margin-bottom: 4px;
+}

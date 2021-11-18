@@ -32,6 +32,7 @@ class User extends CI_Controller {
 		$data['active'] = "";
         $data['header']="template/template_header.php";
 		$data['css']="Form/vForm_css";
+		$data['js']="Form/vForm_js";
 		$data['content']="Form/vForm";
 		// $data['js']="dashboard/dashboard_js.php";
 		$data['footer']="template/template_footer.php";	
@@ -62,6 +63,7 @@ class User extends CI_Controller {
 		$data['active'] = "";
         $data['header']="template/template_header.php";
 		$data['css']="Dataset/vDataset_css";
+		// $data['js']="Dataset/vDataset_js";
 		$data['content']="Dashboard/vDashboard";
 		// $data['js']="dashboard/dashboard_js.php";
 		$data['footer']="template/template_footer.php";	

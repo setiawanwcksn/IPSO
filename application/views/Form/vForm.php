@@ -1,4 +1,10 @@
 <div class="container">
+<?php if ($this->session->flashdata('warning')) { ?>
+                            <div class="alert alert-warning">
+                                <a data-dismiss="alert">&times;</a>
+                                <strong>Maaf,</strong> <?php echo $this->session->flashdata('warning'); ?>
+                            </div>
+                        <?php } ?>
 		<div class="">
 			<div class="card" style="width: 100%; ">
 				<div class="card-body">
@@ -15,7 +21,7 @@
                                     </div>
                                     <div class="form-group">
                                         <label for="age">Umur</label>
-                                        <input id="age" class="form-control" name="age" type="number" style="margin-left: 100px;" placeholder="Masukkan Umur" value="<?php echo $age ?>" required autofocus>
+                                        <input id="age" class="form-control" name="age" min="10" max="100" type="number" style="margin-left: 100px;" placeholder="Masukkan Umur" value="<?php echo $age ?>" required autofocus>
                                     </div>
                                     <div class="form-group">
                                         <label for="gender">Jenis Kelamin</label>                                        

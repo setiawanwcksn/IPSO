@@ -32,8 +32,7 @@ class Optimization extends CI_Controller {
 
     function proccess(){
         $input = $this->input->post(NULL,TRUE);
-        extract($input);   
-        
+        extract($input);           
 		// hitung indeks massa tubuh
 		$imt = $this->IndeksMassaTubuh($input);
 		
@@ -70,7 +69,7 @@ class Optimization extends CI_Controller {
 		];
 		
 		// melakukan perhitungan model IPSO
-		$this->model_ipso($dataKebutuhan);
+		$this->model_ipso($dataKebutuhan,$input);
 
     }
 
@@ -141,6 +140,9 @@ class Optimization extends CI_Controller {
 			$natrium = 600;
 		} else if ($data['sistolik'] >= 160 || $data['diastolik'] >= 100 ){
 			$natrium = 1000;
+		}else {
+			$this->session->set_flashdata('warning', 'Tekanan darah tidak termasuk penderita Hipertensi!');  
+            redirect('User');
 		}
 
 		return $natrium;		
@@ -161,7 +163,7 @@ class Optimization extends CI_Controller {
 		return round($lemak,2);
 	}
 
-	function model_ipso($dataKebutuhan){
+	function model_ipso($dataKebutuhan,$dataDiri){
 		$tMax = 100;
 		for ($t=0; $t < $tMax; $t++) { 
 			if ($t==0) {
@@ -243,7 +245,7 @@ class Optimization extends CI_Controller {
 
 		];
 		// echo '<pre> data : '; print_r($data);die;
-		$this->show_recommendation(end($xBest),$dataKebutuhan,$data);
+		$this->show_recommendation(end($xBest),$dataKebutuhan,$data,$dataDiri);
 	}
 
 	function inisialisasi_awal(){
@@ -341,7 +343,6 @@ class Optimization extends CI_Controller {
 
 	function pBest($fitness){
 		$key = array_keys($fitness,max($fitness));
-		// print_r($key);
 		$pBest[$key[0]] = max($fitness);
 		return $pBest;
 	}
@@ -459,7 +460,7 @@ class Optimization extends CI_Controller {
 		return $x;
 	}
 
-	function show_recommendation($xBest,$dataKebutuhan,$dataProcess){
+	function show_recommendation($xBest,$dataKebutuhan,$dataProcess,$dataDiri){		
 		$j = 0;
 		$getGizi[1] = $this->mPokok->getGizi($xBest[$j]);
 		$getGizi[2] = $this->mNabati->getGizi($xBest[$j]);
@@ -499,7 +500,7 @@ class Optimization extends CI_Controller {
 		
 		$data['kebutuhan'] = $dataKebutuhan;
 		$data['process'] = $dataProcess;
-
+		$data['dataDiri'] = $dataDiri;
 		// Data Session
 		$data['id'] = $this->session->userdata('id'); 
 		$data['nama'] = $this->session->userdata('nama'); 

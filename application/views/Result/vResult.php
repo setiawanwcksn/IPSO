@@ -4,29 +4,18 @@
 		<div class="card" style="width: 100%; ">
 			<div class="card-body">
 				<div class="wrap">
-					<h5 style="text-align:left">Kebutuhan Gizi : </h5>
-					<div class="row mt-3">
-						<div class="form-group" style="text-align:left">
-							<h6>
-								<label>Karbohidrat : <?php echo $kebutuhan['0'] ?> gram</label> <br>
-								<label>Protein : <?php echo $kebutuhan['1'] ?> gram</label> <br>
-								<label>Lemak : <?php echo $kebutuhan['2'] ?> gram</label> <br>
-								<label>Natrium : <?php echo $kebutuhan['3'] ?> gram</label> <br>
-								<label>Kalium : <?php echo $kebutuhan['4'] ?> gram</label> <br>
-							</h6>
-						</div>
-					</div>
-				</div>
-				<hr>
+
+				</div>				
 				<div id="tab">
 					<nav>
 						<a href="#" class="active" data-id="1"> Hasil Optimasi</a>
 						<a href="#" data-id="2"> Lihat Proses IPSO</a>
+						<a href="#" data-id="3"> Data Diri</a>
 					</nav>
 					<div class="tab-content active" data-content="1">
 						<h5 style="text-align:left">Hasil Optimasi Komposisi Makanan</h5>
 						<a href="<?php $y = 1;
-									echo base_url("User/save/") ?>"><button type="button" class="btn btn-outline-dark" style="float: right;" <?php if (!$id) { ?>disabled <?php } ?>>Simpan Data </button> </a>						
+									echo base_url("User/save/") ?>"><button type="button" class="btn btn-outline-dark" style="float: right;" <?php if (!$id) { ?>disabled <?php } ?>>Simpan Data </button> </a>
 						<div style="clear:both"></div>
 						<div class="wrap">
 							<div class="">
@@ -129,6 +118,64 @@
 										</tbody>
 									</table>
 								</div>
+							</div>
+						</div>
+					</div>
+					<div class="tab-content" data-content="3">
+						<div class="row mt-3">
+						<div class="container">
+						<h5 style="text-align:left">Kebutuhan Gizi :</h5>
+							<table id="table_id" class="table table-striped table-hover table-responsive">
+								<thead>
+									<tr class="text-center">
+										<th>Karbohidrat</th>
+										<th>Protein</th>
+										<th>Lemak</th>
+										<th>Natrium</th>
+										<th>Kalium</th>
+									</tr>
+								</thead>
+								<tbody>
+									<tr class="text-center">
+										<td><?php echo $kebutuhan['0'] ?> gram</td>
+										<td><?php echo $kebutuhan['1'] ?> gram</td>
+										<td><?php echo $kebutuhan['2'] ?> gram</td>
+										<td><?php echo $kebutuhan['3'] ?> gram</td>
+										<td><?php echo $kebutuhan['4'] ?> gram</td>
+									</tr>
+								</tbody>
+							</table>
+						</div>
+							<div class="container">
+							<h5 style="text-align:left">Data Diri :</h5>
+							<table id="table_id" class="table table-striped table-hover table-responsive" style="font-size: 11px;">
+								<thead>
+									<tr class="text-center">
+										<th>Nama</th>
+										<th>Umur</th>
+										<th>Jenis Kelamin</th>
+										<th>Berat Badan</th>
+										<th>Tinggi Badan</th>
+										<th>Tek. Sistolik</th>
+										<th>Tek. Diastolik</th>
+										<th>Tingkat Stres</th>
+										<th>Tingkat Aktivitas</th>
+									</tr>
+								</thead>
+								<tbody>
+									<tr class="text-center">
+										<td><?php echo $dataDiri['name'] ?></td>
+										<td><?php echo $dataDiri['age'] ?> Tahun</td>
+										<td><?php echo $dataDiri['gender'] ?></td>
+										<td><?php echo $dataDiri['weight'] ?> Kg</td>
+										<td><?php echo $dataDiri['height'] ?> cm</td>
+										<td><?php echo $dataDiri['sistolik'] ?> mmHg</td>
+										<td><?php echo $dataDiri['diastolik'] ?> mmHg</td>
+										<td><?php echo $dataDiri['stress'] ?> </td>
+										<td><?php echo $dataDiri['activity'] ?> </td>
+									</tr>
+								</tbody>
+							</table>
 							</div>
 						</div>
 					</div>

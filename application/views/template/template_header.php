@@ -21,7 +21,7 @@
 
 </head>
 
-<body>
+<body id="body">
   <div class="container mt-4">
     <center>
       <div class="wrap ">
@@ -33,7 +33,7 @@
               <div style="float:right">
                 <div class="nav-item dropdown">
                   <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                    <?php echo $nama ?> <i class="fas fa-user-tie fa-2x"></i>
+                  <?php echo $nama ?><i class="fas fa-user-tie fa-2x"></i>
                   </a>
                   <?php if ($id) { ?>                            
                   <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
@@ -49,7 +49,7 @@
                   <div class="card <?php if ($active == 'saved') { ?>
                     card-primary
                   <?php } ?>">
-                    <div class="card-body">
+                    <div class="card-body" style="padding-top: 6px;">
                       <h6 class="card-title"><b>Rekomendasi Tersimpan</b></h6>
                       <p class="card-text"></p>
                       <a href="<?php if ($active != 'saved') {
@@ -58,7 +58,7 @@
                         echo "#";
                       } ?>"><button class="btn btn-primary" <?php if ($active == 'saved') { ?>
                         disabled
-                      <?php } ?>>Pilih</button></a>
+                      <?php } ?>><i class="fas fa-save fa-2x"></i></button></a>
                     </div>
                   </div>
                 </div>
@@ -73,7 +73,7 @@
                         echo "#";
                       }  ?>"><button class="btn btn-primary" <?php if ($active == 'unduh') { ?>
                         disabled
-                      <?php } ?>>Pilih</button></a>
+                      <?php } ?>><i class="fas fa-download fa-2x"></i></button></a>
                     </div>
                   </div>
                 </div>
@@ -82,7 +82,7 @@
                     <div class="card-body">
                       <h5 class="card-title"><b>Dashboard</b></h5>
                       <p class="card-text"></p>
-                      <a href="<?php echo base_url('Dashboard'); ?>" class="btn btn-primary">Pilih</a>
+                      <a href="<?php echo base_url('Dashboard'); ?>" class="btn btn-primary"><i class="fas fa-home fa-2x"></i></a>
                     </div>
                   </div>
                 </div>
