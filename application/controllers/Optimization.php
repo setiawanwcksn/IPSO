@@ -515,10 +515,4 @@ class Optimization extends CI_Controller {
 		$data['footer']="template/template_footer.php";	
 		$this->load->view('template/vtemplate',$data);
 	}
-
-	public function showProcess(){		
-		
-		$data = $this->session->userdata('data'); 
-		var_dump($data);
-	}
 }
