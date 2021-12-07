@@ -62,12 +62,31 @@
 						</div>
 					</div>
 					<div class="tab-content" data-content="2">
-						<h5 style="text-align:left">Proses Model IPSO</h5>
+						<h3 style="text-align:left">Proses Model IPSO</h3>
 						<hr>
 						<div style="clear:both"></div>
 						<div class="wrap">
 							<div class="">
 								<div class="row mt-2">
+								<h5 style="text-align:left">Kondisi Terbaik</h5>
+								<table id="table_id" class="table table-striped table-hover table-responsive">
+								<thead>
+									<tr class="text-center">
+										<th>Iterasi</th>
+										<th>Partikel</th>
+										<th>Fitness</th>
+									</tr>
+								</thead>
+								<tbody>
+									<tr class="text-center">
+										<td><?php echo $terbaik['iterasi'] ?> </td>
+										<td><?php echo $terbaik['partikel'] ?> </td>
+										<td><?php echo $terbaik['fitness'] ?> </td>										
+									</tr>
+								</tbody>
+							</table>
+							<br>
+							<h5 style="text-align:left">Proses</h5>
 									<table id="table_id" class="table table-striped table-hover table-responsive">
 										<thead>
 											<tr class="text-center">
@@ -86,13 +105,13 @@
 											<?php $y = 0;
 											$a = 1;
 											$iterasi = 0;
-											for ($i = 0; $i < 400; $i++) {
-												if ($y == 4) {
+											for ($i = 0; $i < ($partikel*$iterasiMax); $i++) {
+												if ($y == $partikel) {
 													$iterasi++;
 													$y = 0;
 												}; ?>
 												<tr class="text-center">
-													<td><?php if ($i == 0 || $i % 4 == 0) {
+													<td><?php if ($i == 0 || $i % $partikel == 0) {
 															echo $a;
 															$a++;
 														} ?></td>

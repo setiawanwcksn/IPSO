@@ -3,6 +3,8 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 class Optimization extends CI_Controller {
 	
+	var $partikel;
+	var $tMax;
 	public function __construct(){
 		parent :: __construct();
 		$this->load->model("mPokok");	
@@ -11,6 +13,8 @@ class Optimization extends CI_Controller {
 		$this->load->model("mNabati");	
 		$this->load->model("mSayur");		
 		$this->load->model("mUser");	
+		$this->partikel = 10;
+		$this->tMax = 400;
 	}
 
 	public function index()
@@ -164,7 +168,7 @@ class Optimization extends CI_Controller {
 	}
 
 	function model_ipso($dataKebutuhan,$dataDiri){
-		$tMax = 100;
+		$tMax = $this->tMax;
 		for ($t=0; $t < $tMax; $t++) { 
 			if ($t==0) {
 				// inisialisasi awal partikel
@@ -192,14 +196,23 @@ class Optimization extends CI_Controller {
 				$gBest = $pBest;
 			}	
 			$gBest = $this->gBest($gBest,$pBest);
-			// echo '<pre> gbest : '; print_r($gBest);
+			// echo '<pre> gbest '.$t. ': '; print_r($gBest);
 			
 			// menyimpan lokasi terbaik pada setiap iterasi	
 			if ($gBest[array_keys($gBest)[0]] <= $pBest[array_keys($pBest)[0]]) {
-				$xBest[$t] = $x[array_keys($pBest)[0]];
-			}
-			// echo '<pre> posisi : ';print_r($xBest);
+				$xBest = $x[array_keys($gBest)[0]];
+			}			
 
+			// menyimpan lokasi terbaik dari t=0 sampai t saat ini
+			$tempBest[$t] = end($gBest);
+			if ($t == 0 || end($gBest) > $tempBest[$t-1]) {
+				$dataTheBest = [
+					'iterasi' => $t+1,
+					'fitness' => end($gBest),
+					'partikel' => array_keys($gBest)[0]+1
+				];
+			}
+						
 			// Menghitung Constriction Factor (K)			
 			$constrictionFactor = $this->constriction_factor($t+1,$tMax);
 			// echo '<pre> K : '; print_r($constrictionFactor);
@@ -210,7 +223,7 @@ class Optimization extends CI_Controller {
 
 			// menghitung kecepatan (V)
 			if ($t == 0) {
-				for ($i=0; $i < 4; $i++) { 
+				for ($i=0; $i < $this->partikel; $i++) { 
 					for ($j=0; $j < 14; $j++) { 
 						$kecepatan[$i][] = 0;
 					}
@@ -219,7 +232,7 @@ class Optimization extends CI_Controller {
 
 
 			// menampung data
-			for ($i=0; $i < 4; $i++) { 
+			for ($i=0; $i < $this->partikel; $i++) { 
 				for ($j=0; $j < 14; $j++) { 					
 					$temp_posisi[$t][$i][] = $x[$i][$j];
 				}
@@ -229,7 +242,7 @@ class Optimization extends CI_Controller {
 			$temp_gbest[$t] = $gBest;
 			$temp_kecepatan[$t] = $kecepatan;			
 			
-			$kecepatan = $this->kecepatan($constrictionFactor,$bobotInersia,$kecepatan,$t,$tMax,$pBest,end($xBest),$x);
+			$kecepatan = $this->kecepatan($constrictionFactor,$bobotInersia,$kecepatan,$t,$tMax,$pBest,$xBest,$x);
 			// echo '<pre> kecepatan : '; print_r($kecepatan);
 
 			// Update Posisi (X)
@@ -244,8 +257,9 @@ class Optimization extends CI_Controller {
 			'kecepatan' => $temp_kecepatan
 
 		];
+		// echo '<pre> best : ' ; print_r($dataTheBest);die;
 		// echo '<pre> data : '; print_r($data);die;
-		$this->show_recommendation(end($xBest),$dataKebutuhan,$data,$dataDiri);
+		$this->show_recommendation($xBest,$dataKebutuhan,$data,$dataDiri,$dataTheBest);
 	}
 
 	function inisialisasi_awal(){
@@ -256,7 +270,7 @@ class Optimization extends CI_Controller {
 		$Xmax[5] = $this->mBuah->getMax();
 
 		$x = array();
-		for ($i=0; $i < 4 ; $i++) { 	
+		for ($i=0; $i < $this->partikel ; $i++) { 	
 			$y = 1;		
 			for ($j=0; $j < 14; $j++) { 
 				$x[$i][] = (int) round(1 + (mt_rand(0,10)/10)*($Xmax[$y]-1));
@@ -278,7 +292,7 @@ class Optimization extends CI_Controller {
 		$getGizi[5] = $this->mBuah->getGizi($x[$i][$j]);
 
 		$gizi = array();
-		for ($i=0; $i < 4 ; $i++) { 	
+		for ($i=0; $i < $this->partikel ; $i++) { 	
 			$karbohidrat = 0;
 			$protein = 0;
 			$lemak = 0;
@@ -326,10 +340,11 @@ class Optimization extends CI_Controller {
 		for ($i=0; $i < count($gizi); $i++) { 
 			$totalPenalti = 0;
 			for ($j=0; $j < count($gizi[$i])-1; $j++) { 
-				$totalPenalti = $totalPenalti + abs($gizi[$i][$j]-$dataKebutuhan[$j]);				
+				$totalPenalti = $totalPenalti + ($dataKebutuhan[$j]-$gizi[$i][$j]);				
 			}				
-			$penalti[] = $totalPenalti;
+			$penalti[] = abs($totalPenalti);
 		}
+		// echo '<pre>';print_r($gizi);print_r($dataKebutuhan);print_r($penalti);die;
 		return $penalti;
 	}
 
@@ -374,54 +389,54 @@ class Optimization extends CI_Controller {
 		// menghitung c1 * r1
 		$c2_r2 = 2 * mt_rand(0,100)/100;
 		// melakukan pengurangan pBest - X
-		for ($i=0; $i < 4; $i++) { 
+		for ($i=0; $i < $this->partikel; $i++) { 
 			for ($j=0; $j < count($x[0]); $j++) { 
 				$pBest_x[$i][] = $x[$key[0]][$j] - $x[$i][$j];
 			}
 		}
 		// melakukan pengurangan gBest - X
-		for ($i=0; $i < 4; $i++) { 
+		for ($i=0; $i < $this->partikel; $i++) { 
 			for ($j=0; $j < count($x[0]); $j++) { 
 				$gBest_x[$i][] = $gBest[$j] - $x[$i][$j];
 			}
 		}
 		
 		// proses 1 : melakukan perkalian hasil c1 dan r1 dengan hasil pengurangan pBest dan X
-		for ($i=0; $i < 4; $i++) { 
+		for ($i=0; $i < $this->partikel; $i++) { 
 			for ($j=0; $j < count($x[0]); $j++) { 
 				$c1_r1_pBest_x[$i][] = $pBest_x[$i][$j]*$c1_r1;
 			}
 		}		
 
 		// proses 2 :  melakukan perkalian hasil c2 dan r2 dengan hasil pengurangan gBest dan X
-		for ($i=0; $i < 4; $i++) { 
+		for ($i=0; $i < $this->partikel; $i++) { 
 			for ($j=0; $j < count($x[0]); $j++) { 
 				$c2_r2_gBest_x[$i][] = $gBest_x[$i][$j]*$c2_r2;
 			}
 		}				
 		// proses 3 : melakukan penjumlahan proses 1 dan proses 2
-		for ($i=0; $i < 4; $i++) { 
+		for ($i=0; $i < $this->partikel; $i++) { 
 			for ($j=0; $j < count($x[0]); $j++) { 
 				$proses3[$i][] = $c1_r1_pBest_x[$i][$j] + $c2_r2_gBest_x[$i][$j];
 			}
 		}	
 
 		// melakukan perhitungan untuk 1/2 iterasi kebawah
-		for ($i=0; $i < 4; $i++) { 
+		for ($i=0; $i < $this->partikel; $i++) { 
 			for ($j=0; $j < count($x[0]); $j++) { 
 				$w_v[$i][] = $bobotInersia * $kecepatan[$i][$j];
 			}
 		}			
 		
 		// melakukan perhitungan untuk 1/2 iterasi keatas
-		for ($i=0; $i < 4; $i++) { 
+		for ($i=0; $i < $this->partikel; $i++) { 
 			for ($j=0; $j < count($x[0]); $j++) { 
 				$w_k[$i][] = $constrictionFactor *0.7* $kecepatan[$i][$j];
 			}
 		}			
 
 		// menghitung kecepatan terbaru
-		for ($i=0; $i < 4; $i++) { 
+		for ($i=0; $i < $this->partikel; $i++) { 
 			for ($j=0; $j < count($x[0]); $j++) { 
 				if ($t < ($tMax/2)) {
 					$kecepatanNew[$i][] = round($proses3[$i][$j] + $w_v[$i][$j]);
@@ -440,7 +455,7 @@ class Optimization extends CI_Controller {
 		$Xmax[3] = $this->mHewani->getMax();
 		$Xmax[4] = $this->mSayur->getMax();
 		$Xmax[5] = $this->mBuah->getMax();
-		for ($i=0; $i < 4; $i++) { 
+		for ($i=0; $i < $this->partikel; $i++) { 
 			$y = 1;
 			for ($j=0; $j < 14; $j++) { 
 				$temp_x = abs($posisiAwal[$i][$j] + $kecepatan[$i][$j]);				
@@ -460,7 +475,7 @@ class Optimization extends CI_Controller {
 		return $x;
 	}
 
-	function show_recommendation($xBest,$dataKebutuhan,$dataProcess,$dataDiri){		
+	function show_recommendation($xBest,$dataKebutuhan,$dataProcess,$dataDiri,$dataTheBest){		
 		$j = 0;
 		$getGizi[1] = $this->mPokok->getGizi($xBest[$j]);
 		$getGizi[2] = $this->mNabati->getGizi($xBest[$j]);
@@ -476,16 +491,16 @@ class Optimization extends CI_Controller {
 				$data['berat'][$i][] = $this->mPokok->getGizi($xBest[$j])->berat;
 			}elseif ($y == 2) {
 				$data['makanan'][$i][] = $this->mNabati->getGizi($xBest[$j])->nama;
-				$data['berat'][$i][] = $this->mNabati->getGizi($xBest[$j])->per;
+				$data['berat'][$i][] = $this->mNabati->getGizi($xBest[$j])->berat;
 			}elseif ($y == 3) {
 				$data['makanan'][$i][] = $this->mHewani->getGizi($xBest[$j])->nama;
-				$data['berat'][$i][] = $this->mHewani->getGizi($xBest[$j])->per;
+				$data['berat'][$i][] = $this->mHewani->getGizi($xBest[$j])->berat;
 			}elseif ($y == 4) {
 				$data['makanan'][$i][] = $this->mSayur->getGizi($xBest[$j])->nama;
-				$data['berat'][$i][] = $this->mSayur->getGizi($xBest[$j])->per;
+				$data['berat'][$i][] = $this->mSayur->getGizi($xBest[$j])->berat;
 			}elseif ($y == 5) {
 				$data['makanan'][$i][] = $this->mBuah->getGizi($xBest[$j])->nama;
-				$data['berat'][$i][] = $this->mBuah->getGizi($xBest[$j])->per;
+				$data['berat'][$i][] = $this->mBuah->getGizi($xBest[$j])->berat;
 			}
 			if ($j == 13) {
 				$data['makanan'][$i][] = " - ";
@@ -506,7 +521,9 @@ class Optimization extends CI_Controller {
 		$data['nama'] = $this->session->userdata('nama'); 
 		$data['username'] = $this->session->userdata('username'); 
 		$data['is_login'] = $this->session->userdata('is_login'); 
-				
+		$data['terbaik'] = $dataTheBest;
+		$data['partikel'] = $this->partikel;
+		$data['iterasiMax'] = $this->tMax;
 		$data['active'] = "";
 		$data['header']="template/template_header.php";
 		$data['css']="Result/vResult_css";
