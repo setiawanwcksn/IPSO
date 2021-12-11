@@ -55,24 +55,16 @@ class User extends CI_Controller {
 		$this->mUser->userHistory($data);
 		
 		// Data Session
-		$data['id'] = $this->session->userdata('id'); 
-		$data['nama'] = $this->session->userdata('nama'); 
-		$data['username'] = $this->session->userdata('username'); 
-		$data['is_login'] = $this->session->userdata('is_login'); 		
-
-		$data['active'] = "";
-        $data['header']="template/template_header.php";
-		$data['css']="Dataset/vDataset_css";
-		// $data['js']="Dataset/vDataset_js";
-		$data['content']="Dashboard/vDashboard";
-		// $data['js']="dashboard/dashboard_js.php";
-		$data['footer']="template/template_footer.php";	
-		$this->load->view('template/vtemplate',$data);		
+		redirect('Dashboard');
 	}
 
 	function show(){
 		if ($this->session->userdata('id')) {
 			$history = $this->mUser->getHistory($this->session->userdata('id'));
+			if ($history == null) {
+				$this->session->set_flashdata('warning', 'Belum ada rekomendasi tersimpan');
+				redirect('Dashboard');
+			}
 		// echo '<pre>';print_r($history);die;
 
 		for ($indeks=0; $indeks < count($history); $indeks++) { 
@@ -98,7 +90,7 @@ class User extends CI_Controller {
 				}
 			}			
 		}
-		// echo '<pre>';print_r($data);die;
+		// echo '<pre>';print_r($data['history']);die;
 
 		// Data Session
 		$data['id'] = $this->session->userdata('id'); 
