@@ -386,7 +386,7 @@ class Optimization extends CI_Controller {
 		$key = array_keys($pBest);
 		// menghitung c1 * r1
 		$c1_r1 = 1 * mt_rand(0,100)/100;
-		// menghitung c1 * r1
+		// menghitung c2 * r1
 		$c2_r2 = 2 * mt_rand(0,100)/100;
 		// melakukan pengurangan pBest - X
 		for ($i=0; $i < $this->partikel; $i++) { 
